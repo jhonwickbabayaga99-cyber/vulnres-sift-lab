@@ -36,7 +36,7 @@ jobs:
       - name: Pasang dependensi inti
         run: |
           python -m pip install --upgrade pip
-          python -m pip install networkx tree-sitter tree-sitter-c
+          python -m pip install networkx tree-sitter tree-sitter-c tree-sitter-cpp
 
       - name: Ambil FreeRDP (sub-pohon yang dianalisis)
         run: |
@@ -114,8 +114,10 @@ jobs:
             -DCMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer -g -O1" \
             -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" \
             -DWITH_SERVER=OFF -DWITH_X11=OFF -DWITH_WAYLAND=OFF -DWITH_CUPS=OFF \
-            -DWITH_PCSC=OFF -DWITH_PULSE=OFF -DWITH_ALSA=OFF -DWITH_FFMPEG=OFF \
-            -DWITH_JPEG=OFF -DWITH_GSSAPI=OFF -DWITH_KRB5=OFF -DWITH_MANPAGES=OFF \
+            -DWITH_PCSC=OFF -DWITH_PULSE=OFF -DWITH_ALSA=OFF \
+            -DWITH_SWSCALE=OFF -DWITH_JPEG=OFF -DWITH_CAIRO=OFF -DWITH_OPUS=OFF \
+            -DWITH_OPENCL=OFF -DWITH_OPENH264_LOADING=OFF \
+            -DWITH_GSSAPI=OFF -DWITH_KRB5=OFF -DWITH_MANPAGES=OFF \
             -DWITH_VERBOSE_WINPR_ASSERT=OFF -DWITH_SAMPLE=OFF
 
       - name: Build + install FreeRDP (dengan ASan)

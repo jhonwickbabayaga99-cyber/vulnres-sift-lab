@@ -1,6 +1,8 @@
 # artefak lokal — tidak ikut ke GitHub (CI mengkloning FreeRDP sendiri)
 corpus/
 state/
+notes/
+ci-out/
 *.db
 *.session.json
 *.apikey.json

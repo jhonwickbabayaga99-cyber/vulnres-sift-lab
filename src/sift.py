@@ -57,8 +57,14 @@ CREATE INDEX IF NOT EXISTS i_funcs_name ON funcs(name);
 
 def _parser():
     from tree_sitter import Language, Parser
-    import tree_sitter_c, tree_sitter_cpp
-    return {"c": Parser(Language(tree_sitter_c.language())), "cpp": Parser(Language(tree_sitter_cpp.language()))}
+    import tree_sitter_c
+    out = {"c": Parser(Language(tree_sitter_c.language()))}
+    try:                                      # opsional: bila tak ada, berkas C++ dilewati
+        import tree_sitter_cpp
+        out["cpp"] = Parser(Language(tree_sitter_cpp.language()))
+    except Exception:
+        pass
+    return out
 
 
 def txt(src: bytes, node) -> str:
