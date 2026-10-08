@@ -25,6 +25,7 @@ target_include_directories(harness_nego PRIVATE
   "${FREERDP_BUILD}/winpr/include"
   "${FREERDP_BUILD}/include"
   "${FREERDP_SRC}/include"
+  "${FREERDP_SRC}/libfreerdp/core"
   "${FREERDP_SRC}/libfreerdp"
   "${FREERDP_SRC}/winpr/include")
 

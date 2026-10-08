@@ -38,12 +38,14 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install networkx tree-sitter tree-sitter-c tree-sitter-cpp
 
-      - name: Ambil FreeRDP (sub-pohon yang dianalisis)
+      - name: Ambil FreeRDP (sub-pohon yang dianalisis, revisi dipin)
         run: |
-          git clone --depth 1 --filter=blob:none --sparse "$FREERDP_REPO" corpus/freerdp
+          git clone --filter=blob:none --sparse "$FREERDP_REPO" corpus/freerdp
           cd corpus/freerdp
+          git fetch --depth 1 origin "$FREERDP_COMMIT"
+          git checkout -q FETCH_HEAD
           git sparse-checkout set libfreerdp/core channels/urbdrc
-          git rev-parse HEAD
+          echo "revisi: $(git rev-parse HEAD)"
 
       - name: Index → recon → slice → analyze → triage
         run: |
@@ -101,9 +103,11 @@ jobs:
 
       - name: Ambil FreeRDP (penuh, dangkal)
         run: |
-          git clone --depth 1 "$FREERDP_REPO" freerdp-src
+          git clone --filter=blob:none "$FREERDP_REPO" freerdp-src
           cd freerdp-src
-          git rev-parse HEAD
+          git fetch --depth 1 origin "$FREERDP_COMMIT"
+          git checkout -q FETCH_HEAD
+          echo "revisi rentan: $(git rev-parse HEAD)"
 
       - name: Konfigurasi FreeRDP (minimal + ASan)
         run: |
@@ -148,7 +152,8 @@ jobs:
             echo "pkg-config libs: ${LIBS:0:200}"
             clang -fsanitize=address -fno-omit-frame-pointer -g -O1 \
               -I"$HOME/frdp/include" -I"$PWD/build-freerdp/winpr/include" -I"$PWD/build-freerdp/include" \
-              -I"$PWD/freerdp-src/include" -I"$PWD/freerdp-src/libfreerdp" -I"$PWD/freerdp-src/winpr/include" \
+              -I"$PWD/freerdp-src/include" -I"$PWD/freerdp-src/libfreerdp/core" \
+              -I"$PWD/freerdp-src/libfreerdp" -I"$PWD/freerdp-src/winpr/include" \
               ci/harness/harness_nego.c -o build-harness/harness_nego \
               -L"$HOME/frdp/lib" $LIBS -lssl -lcrypto -lz -lpthread -lm -ldl
           fi
