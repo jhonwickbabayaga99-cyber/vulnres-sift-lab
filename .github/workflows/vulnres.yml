@@ -215,3 +215,47 @@ jobs:
           find build-urbdrc -name "*urbdrc*" | head -20
           echo "--- pustaka statis terkait:"
           find build-urbdrc -name "*.a" | head -20
+
+  urbdrc-leak:
+    name: urbdrc leak (bukti CWE-457/908)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependensi
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq clang cmake ninja-build pkg-config libssl-dev zlib1g-dev \
+            libusb-1.0-0-dev libudev-dev libfuse3-dev
+      - name: Ambil FreeRDP (revisi dipin)
+        run: |
+          git clone --filter=blob:none "$FREERDP_REPO" freerdp-src
+          cd freerdp-src
+          git fetch --depth 1 origin "$FREERDP_COMMIT"
+          git checkout -q FETCH_HEAD
+          echo "revisi: $(git rev-parse HEAD)"
+      - name: Konfigurasi + build + install (channel urbdrc, TANPA ASan)
+        run: |
+          cmake -S freerdp-src -B build-leak-frdp -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_INSTALL_PREFIX="$HOME/frdp" \
+            -DCMAKE_C_COMPILER=clang \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF \
+            -DWITH_CHANNELS=ON -DWITH_CLIENT=ON -DWITH_CLIENT_COMMON=ON \
+            -DWITH_SERVER=OFF -DWITH_X11=OFF -DWITH_WAYLAND=OFF -DWITH_CUPS=OFF \
+            -DWITH_PCSC=OFF -DWITH_PULSE=OFF -DWITH_ALSA=OFF \
+            -DWITH_FFMPEG=OFF -DWITH_VIDEO_FFMPEG=OFF -DWITH_DSP_FFMPEG=OFF \
+            -DWITH_SWSCALE=OFF -DWITH_JPEG=OFF -DWITH_CAIRO=OFF -DWITH_OPUS=OFF \
+            -DWITH_GSSAPI=OFF -DWITH_KRB5=OFF -DWITH_MANPAGES=OFF -DWITH_SAMPLE=OFF
+          cmake --build build-leak-frdp --target install -j"$(nproc)" 2>&1 | tail -8
+      - name: Build + jalankan harness kebocoran (gate)
+        run: bash ci/harness/build_urbdrc.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: urbdrc-leak-artifacts
+          path: |
+            build-leak/leak.log
+            build-leak/cc.log
+            build-leak/harness_urbdrc
+          retention-days: 14
