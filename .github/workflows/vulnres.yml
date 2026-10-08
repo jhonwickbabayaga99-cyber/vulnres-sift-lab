@@ -250,6 +250,8 @@ jobs:
           cmake --build build-leak-frdp --target install -j"$(nproc)" 2>&1 | tail -8
       - name: Build + jalankan harness kebocoran (gate)
         run: bash ci/harness/build_urbdrc.sh
+      - name: Build + jalankan harness rantai (gate hijack)
+        run: bash ci/harness/build_chain.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -258,4 +260,7 @@ jobs:
             build-leak/leak.log
             build-leak/cc.log
             build-leak/harness_urbdrc
+            build-chain/chain.log
+            build-chain/cc.log
+            build-chain/harness_chain
           retention-days: 14
