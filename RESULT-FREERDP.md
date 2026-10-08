@@ -269,8 +269,9 @@ diperbaiki di run #20.
 
 ## 10. Reachability REMOTE — TERBUKTI ✅
 
-Harness `ci/harness/harness_remote.c` (job `remote-asan`), run `37775986330`.
-Salinan log: `evidence/remote-reachability-37775986330.log`.
+Harness `ci/harness/harness_remote.c` (job `remote-asan`), run `37775986330` — **direproduksi** pada
+run `37777369446` (kelima job `success`). Salinan log: `evidence/remote-reachability-37775986330.log`
++ `evidence/remote-reachability-37777369446.log`.
 
 Di sini **tidak ada panggilan API internal**: server dan klien sama-sama FreeRDP asli, dan satu-satunya
 sumber data adalah PDU yang dikirim melewati socket loopback.
