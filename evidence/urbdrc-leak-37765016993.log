@@ -1,0 +1,7 @@
+harness urbdrc — kebocoran memori tak-terinisialisasi (CWE-457/908)
+  MALLOC_PERTURB_=0xcd
+  [transfer GAGAL] total PDU=4132 byte · region OutputBufferSize=4096 byte (offset 36) · byte dominan 0x32 = 100.0%
+  LEAK: 4096 byte memori tak-terinisialisasi terkirim ke server (dominan 0x32)
+  [transfer SUKSES (kontrol)] total PDU=4132 byte · region OutputBufferSize=4096 byte (offset 36) · byte dominan 0x41 = 99.1%
+  kontrol OK: region berisi tulisan perangkat (0x41), bukan bocoran
+VERDICT: BELUM TERBUKTI (gagal=0 kontrol=9)

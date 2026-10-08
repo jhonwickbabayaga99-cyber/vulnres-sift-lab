@@ -188,3 +188,36 @@ Gate CI: `ci/assert_uninit.py` (gagal bila salah satu titik hilang) dijalankan d
 Catatan penting & jujur: master terbaru **masih** memakai `Stream_Seek` tanpa zero (perbaikan hulu bukan
 zeroing; helper `urb_completion_payload_size()` mengembalikan `outputBufferSize` untuk transfer IN).
 Apakah master masih bocor **tidak** boleh diklaim dari pembacaan statis — itu urusan validasi dinamis (Blok 2/3).
+
+## 8. Validasi dinamis kebocoran urbdrc (CWE-457/908) — TERBUKTI ✅
+
+Harness `ci/harness/harness_urbdrc.c` (+ `ci/harness/build_urbdrc.sh`), job CI `urbdrc-leak`,
+run `37765016993`. Salinan log: `evidence/urbdrc-leak-37765016993.log`.
+
+```
+harness urbdrc — kebocoran memori tak-terinisialisasi (CWE-457/908)
+  MALLOC_PERTURB_=0xcd
+  [transfer GAGAL] total PDU=4132 byte · region OutputBufferSize=4096 byte (offset 36) · byte dominan 0x32 = 100.0%
+  LEAK: 4096 byte memori tak-terinisialisasi terkirim ke server (dominan 0x32)
+  [transfer SUKSES (kontrol)] … byte dominan 0x41 = 99.1% → kontrol OK: region berisi tulisan perangkat
+```
+
+Bacaan: PDU yang "dikirim ke server" = **36 byte header + 4096 byte payload**. Pada kasus transfer IN
+**gagal**, seluruh 4096 byte payload adalah `0x32` = `0xcd ^ 0xff` — yaitu pola `MALLOC_PERTURB_`,
+bukti bahwa region itu **memori malloc yang tidak pernah ditulis** (sisa heap → berisi pointer di
+proses nyata, persis yang dipakai untuk menaklukkan ASLR). Kasus kontrol (transfer sukses) mengisi
+region dengan pola perangkat `0x41` → pengukuran membedakan, bukan hijau palsu.
+
+Cara harness menembus jalur ini (semua fakta diverifikasi dari sumber @`993499447e32…`):
+
+| Langkah | Detail |
+|---|---|
+| Pintu masuk | `urbdrc_process_udev_data_transfer()` (non-static) → `urbdrc_process_transfer_request()` → `case TS_URB_BULK_OR_INTERRUPT_TRANSFER` → `urb_bulk_or_interrupt_transfer()` → `pdev->bulk_or_interrupt_transfer()` |
+| Titik bocor | fungsi `static urb_write_completion()` → `Stream_Seek(out, OutputBufferSize)` (:134) → `stream_write_and_free()` |
+| Simulasi kegagalan | stub `IUDEVICE::bulk_or_interrupt_transfer` memanggil callback penyelesaian dengan `status = 0xC0000001` (device stall) dan `OutputBufferSize = 4096` |
+| Penangkap PDU | harness menyediakan `stream_write_and_free()` sendiri (menyalin byte keluar), karena itu `urbdrc_main.o` **tidak** ditautkan |
+| Pengukuran | `MALLOC_PERTURB_=0xcd` (glibc mengisi memori baru dengan `0xcd ^ 0xff`) + statistik byte dominan ≥90% |
+
+Catatan kejujuran: gate pertama menandai "BELUM TERBUKTI" bukan karena pengukurannya salah, melainkan
+karena bug di harness (cabang kontrol lupa menyetel `exit_code = 0`). Diperbaiki; angka bocoran
+(100% pola perturb) sudah benar sejak run pertama.

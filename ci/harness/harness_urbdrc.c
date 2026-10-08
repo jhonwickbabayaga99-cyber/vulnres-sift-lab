@@ -203,7 +203,10 @@ static int run_case(BOOL succeed, int* exit_code)
 	else
 	{
 		if (ratio >= 0.90 && bb == FILL_PATTERN)
+		{
 			printf("  kontrol OK: region berisi tulisan perangkat (0x%02x), bukan bocoran\n", bb);
+			*exit_code = 0;
+		}
 		else
 		{
 			printf("  kontrol ANEH: region tidak berisi tulisan kita (0x%02x %.1f%%)\n", bb, ratio * 100.0);
