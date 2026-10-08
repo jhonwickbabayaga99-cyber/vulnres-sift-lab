@@ -116,6 +116,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX="$HOME/frdp" \
             -DCMAKE_C_COMPILER=clang \
             -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF \
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
             -DCMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer -g -O1" \
             -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" \
