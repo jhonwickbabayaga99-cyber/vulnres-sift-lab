@@ -7,6 +7,13 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 if(NOT DEFINED FREERDP_SRC)
   message(FATAL_ERROR "butuh -DFREERDP_SRC=<direktori sumber FreeRDP>")
 endif()
+# winpr/config.h itu header HASIL GENERATE → hanya ada di direktori build & prefix install
+if(NOT DEFINED FREERDP_BUILD)
+  set(FREERDP_BUILD "${CMAKE_CURRENT_BINARY_DIR}/../build-freerdp")
+endif()
+if(NOT DEFINED FREERDP_INSTALL)
+  set(FREERDP_INSTALL "$ENV{HOME}/frdp")
+endif()
 
 find_package(FreeRDP REQUIRED)
 
@@ -14,6 +21,9 @@ add_executable(harness_nego harness_nego.c)
 
 # header internal FreeRDP (nego.h dll) ada di pohon sumber, bukan selalu di prefix install
 target_include_directories(harness_nego PRIVATE
+  "${FREERDP_INSTALL}/include"
+  "${FREERDP_BUILD}/winpr/include"
+  "${FREERDP_BUILD}/include"
   "${FREERDP_SRC}/include"
   "${FREERDP_SRC}/libfreerdp"
   "${FREERDP_SRC}/winpr/include")

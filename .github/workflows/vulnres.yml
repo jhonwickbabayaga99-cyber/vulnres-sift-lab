@@ -134,18 +134,21 @@ jobs:
             -DCMAKE_C_COMPILER=clang \
             -DCMAKE_PREFIX_PATH="$HOME/frdp" \
             -DFREERDP_SRC="$PWD/freerdp-src" \
+            -DFREERDP_BUILD="$PWD/build-freerdp" \
+            -DFREERDP_INSTALL="$HOME/frdp" \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo
           cmake --build build-harness -j"$(nproc)"
           set -e
           if [ ! -x build-harness/harness_nego ]; then
             echo "::warning::cmake harness gagal → fallback pkg-config (static)"
             mkdir -p build-harness
-            LIBS=$(pkg-config --static --libs freerdp3 freerdp-client3 winpr3 2>/dev/null \
-                   || pkg-config --static --libs freerdp2 freerdp-client2 winpr2 2>/dev/null || true)
+            export PKG_CONFIG_PATH="$HOME/frdp/lib/pkgconfig:$HOME/frdp/lib64/pkgconfig:${PKG_CONFIG_PATH}"
+            LIBS=$(pkg-config --static --libs freerdp3 winpr3 2>/dev/null \
+                   || pkg-config --static --libs freerdp2 winpr2 2>/dev/null || true)
             echo "pkg-config libs: ${LIBS:0:200}"
             clang -fsanitize=address -fno-omit-frame-pointer -g -O1 \
-              -I"$HOME/frdp/include" -I"$PWD/freerdp-src/include" \
-              -I"$PWD/freerdp-src/libfreerdp" -I"$PWD/freerdp-src/winpr/include" \
+              -I"$HOME/frdp/include" -I"$PWD/build-freerdp/winpr/include" -I"$PWD/build-freerdp/include" \
+              -I"$PWD/freerdp-src/include" -I"$PWD/freerdp-src/libfreerdp" -I"$PWD/freerdp-src/winpr/include" \
               ci/harness/harness_nego.c -o build-harness/harness_nego \
               -L"$HOME/frdp/lib" $LIBS -lssl -lcrypto -lz -lpthread -lm -ldl
           fi
