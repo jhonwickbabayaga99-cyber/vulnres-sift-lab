@@ -1,0 +1,101 @@
+[harness] instance+context siap (settings=0x52e000000400)
+[harness] menyuntikkan routing token 600 byte (batas alokasi 512)
+[harness] RoutingTokenLength tersimpan; memanggil nego_send_negotiation_request
+=================================================================
+==4922==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x515000003200 at pc 0x5596c742f848 bp 0x7fff80d7b1f0 sp 0x7fff80d7a9b0
+WRITE of size 600 at 0x515000003200 thread T0
+    #0 0x5596c742f847 in __asan_memcpy (/home/runner/work/vulnres-sift-lab/vulnres-sift-lab/build-harness/harness_nego+0x228847) (BuildId: 8b7932b517b4b8918049a6135d51f0d4e11acdb8)
+    #1 0x5596c74771bf in Stream_Write build/./winpr/include/winpr/stream.h:1193:4
+    #2 0x5596c74771bf in nego_send_negotiation_request build/./libfreerdp/core/nego.c:1098:3
+    #3 0x5596c7470091 in main /home/runner/work/vulnres-sift-lab/vulnres-sift-lab/ci/harness/harness_nego.c:84:8
+    #4 0x7fb0eea2a1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #5 0x7fb0eea2a28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #6 0x5596c7396ab4 in _start (/home/runner/work/vulnres-sift-lab/vulnres-sift-lab/build-harness/harness_nego+0x18fab4) (BuildId: 8b7932b517b4b8918049a6135d51f0d4e11acdb8)
+
+0x515000003200 is located 0 bytes after 512-byte region [0x515000003000,0x515000003200)
+allocated by thread T0 here:
+    #0 0x5596c7431903 in malloc (/home/runner/work/vulnres-sift-lab/vulnres-sift-lab/build-harness/harness_nego+0x22a903) (BuildId: 8b7932b517b4b8918049a6135d51f0d4e11acdb8)
+    #1 0x5596c7799d61 in Stream_New build/./winpr/libwinpr/utils/stream.c:101:22
+    #2 0x5596c74770ee in nego_send_negotiation_request build/./libfreerdp/core/nego.c:1083:6
+    #3 0x5596c7470091 in main /home/runner/work/vulnres-sift-lab/vulnres-sift-lab/ci/harness/harness_nego.c:84:8
+    #4 0x7fb0eea2a1c9  (/lib/x86_64-linux-gnu/libc.so.6+0x2a1c9) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #5 0x7fb0eea2a28a in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x2a28a) (BuildId: a4a7992a8e66555c8141ab2a08a8465ff6e0ea65)
+    #6 0x5596c7396ab4 in _start (/home/runner/work/vulnres-sift-lab/vulnres-sift-lab/build-harness/harness_nego+0x18fab4) (BuildId: 8b7932b517b4b8918049a6135d51f0d4e11acdb8)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow (/home/runner/work/vulnres-sift-lab/vulnres-sift-lab/build-harness/harness_nego+0x228847) (BuildId: 8b7932b517b4b8918049a6135d51f0d4e11acdb8) in __asan_memcpy
+Shadow bytes around the buggy address:
+  0x515000002f80: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x515000003000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x515000003080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x515000003100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x515000003180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x515000003200:[fa]fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x515000003280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x515000003300: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x515000003380: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x515000003400: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x515000003480: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+Stats: 7M malloced (0M for red zones) by 10232 calls
+Stats: 0M realloced by 45 calls
+Stats: 0M freed by 4685 calls
+Stats: 0M really freed by 0 calls
+Stats: 21M (21M-0M) mmaped; 71 maps, 0 unmaps
+  mallocs by size class: 2:3993; 3:4778; 4:274; 6:199; 7:157; 8:4; 11:6; 12:417; 13:20; 14:6; 15:9; 16:14; 17:140; 18:6; 19:3; 20:7; 21:20; 22:6; 23:1; 24:2; 25:7; 26:3; 29:52; 30:74; 33:8; 34:3; 36:4; 37:1; 41:5; 46:3; 49:2; 
+Stats: malloc large: 8
+Stats: StackDepot: 1766 ids; 9M allocated
+Stats: SizeClassAllocator64: 7M mapped (1M rss) in 12671 allocations; remains 12671
+  02 (    32): mapped:    256K allocs:    4096 frees:       0 inuse:   4096 num_freed_chunks    4096 avail:   8192 rss:    128K releases:      0 last released:      0K region: 0x502000000000
+  03 (    48): mapped:    256K allocs:    4992 frees:       0 inuse:   4992 num_freed_chunks     469 avail:   5461 rss:    228K releases:      0 last released:      0K region: 0x503000000000
+  04 (    64): mapped:    256K allocs:     384 frees:       0 inuse:    384 num_freed_chunks    3712 avail:   4096 rss:     20K releases:      0 last released:      0K region: 0x504000000000
+  06 (    96): mapped:    256K allocs:     256 frees:       0 inuse:    256 num_freed_chunks    2474 avail:   2730 rss:     20K releases:      0 last released:      0K region: 0x506000000000
+  07 (   112): mapped:    256K allocs:     256 frees:       0 inuse:    256 num_freed_chunks    2084 avail:   2340 rss:     20K releases:      0 last released:      0K region: 0x507000000000
+  08 (   128): mapped:    256K allocs:     128 frees:       0 inuse:    128 num_freed_chunks    1920 avail:   2048 rss:      4K releases:      0 last released:      0K region: 0x508000000000
+  11 (   176): mapped:    256K allocs:     128 frees:       0 inuse:    128 num_freed_chunks    1361 avail:   1489 rss:      4K releases:      0 last released:      0K region: 0x50b000000000
+  12 (   192): mapped:    256K allocs:     512 frees:       0 inuse:    512 num_freed_chunks     853 avail:   1365 rss:     80K releases:      0 last released:      0K region: 0x50c000000000
+  13 (   208): mapped:    256K allocs:     128 frees:       0 inuse:    128 num_freed_chunks    1132 avail:   1260 rss:      8K releases:      0 last released:      0K region: 0x50d000000000
+  14 (   224): mapped:    256K allocs:     256 frees:       0 inuse:    256 num_freed_chunks     914 avail:   1170 rss:      8K releases:      0 last released:      0K region: 0x50e000000000
+  15 (   240): mapped:    256K allocs:     128 frees:       0 inuse:    128 num_freed_chunks     964 avail:   1092 rss:      4K releases:      0 last released:      0K region: 0x50f000000000
+  16 (   256): mapped:    256K allocs:     128 frees:       0 inuse:    128 num_freed_chunks     896 avail:   1024 rss:      4K releases:      0 last released:      0K region: 0x510000000000
+  17 (   320): mapped:    256K allocs:     256 frees:       0 inuse:    256 num_freed_chunks     563 avail:    819 rss:     44K releases:      0 last released:      0K region: 0x511000000000
+  18 (   384): mapped:    256K allocs:     128 frees:       0 inuse:    128 num_freed_chunks     554 avail:    682 rss:      4K releases:      0 last released:      0K region: 0x512000000000
+  19 (   448): mapped:    256K allocs:     128 frees:       0 inuse:    128 num_freed_chunks     457 avail:    585 rss:      4K releases:      0 last released:      0K region: 0x513000000000
+  20 (   512): mapped:    256K allocs:     128 frees:       0 inuse:    128 num_freed_chunks     384 avail:    512 rss:      4K releases:      0 last released:      0K region: 0x514000000000
+  21 (   640): mapped:    256K allocs:     102 frees:       0 inuse:    102 num_freed_chunks     307 avail:    409 rss:     16K releases:      0 last released:      0K region: 0x515000000000
+  22 (   768): mapped:    256K allocs:      85 frees:       0 inuse:     85 num_freed_chunks     256 avail:    341 rss:      8K releases:      0 last released:      0K region: 0x516000000000
+  23 (   896): mapped:    256K allocs:      73 frees:       0 inuse:     73 num_freed_chunks     219 avail:    292 rss:      4K releases:      0 last released:      0K region: 0x517000000000
+  24 (  1024): mapped:    256K allocs:      64 frees:       0 inuse:     64 num_freed_chunks     192 avail:    256 rss:      4K releases:      0 last released:      0K region: 0x518000000000
+  25 (  1280): mapped:    256K allocs:      51 frees:       0 inuse:     51 num_freed_chunks     153 avail:    204 rss:     12K releases:      0 last released:      0K region: 0x519000000000
+  26 (  1536): mapped:    256K allocs:      42 frees:       0 inuse:     42 num_freed_chunks     128 avail:    170 rss:      8K releases:      0 last released:      0K region: 0x51a000000000
+  29 (  2560): mapped:    256K allocs:      75 frees:       0 inuse:     75 num_freed_chunks      27 avail:    102 rss:    132K releases:      0 last released:      0K region: 0x51d000000000
+  30 (  3072): mapped:    256K allocs:      84 frees:       0 inuse:     84 num_freed_chunks       1 avail:     85 rss:    224K releases:      0 last released:      0K region: 0x51e000000000
+  33 (  5120): mapped:    256K allocs:      12 frees:       0 inuse:     12 num_freed_chunks      39 avail:     51 rss:     40K releases:      0 last released:      0K region: 0x521000000000
+  34 (  6144): mapped:    256K allocs:      10 frees:       0 inuse:     10 num_freed_chunks      32 avail:     42 rss:     20K releases:      0 last released:      0K region: 0x522000000000
+  36 (  8192): mapped:    256K allocs:      24 frees:       0 inuse:     24 num_freed_chunks       8 avail:     32 rss:     76K releases:      0 last released:      0K region: 0x524000000000
+  37 ( 10240): mapped:    256K allocs:       6 frees:       0 inuse:      6 num_freed_chunks      19 avail:     25 rss:     12K releases:      0 last released:      0K region: 0x525000000000
+  41 ( 20480): mapped:    256K allocs:       6 frees:       0 inuse:      6 num_freed_chunks       6 avail:     12 rss:     52K releases:      0 last released:      0K region: 0x529000000000
+  46 ( 49152): mapped:    256K allocs:       3 frees:       0 inuse:      3 num_freed_chunks       2 avail:      5 rss:    132K releases:      0 last released:      0K region: 0x52e000000000
+  49 ( 81920): mapped:    256K allocs:       2 frees:       0 inuse:      2 num_freed_chunks       1 avail:      3 rss:     76K releases:      0 last released:      0K region: 0x531000000000
+Stats: LargeMmapAllocator: allocated 8 times, remains 8 (6528 K) max 6 M; by size logs: 17:4; 18:2; 21:2; 
+Quarantine limits: global: 256Mb; thread local: 1024Kb
+Global quarantine stats: batches: 0; bytes: 0 (user: 0); chunks: 0 (capacity: 0); 0% chunks used; 0% memory overhead
+==4922==ABORTING
+exit=1
