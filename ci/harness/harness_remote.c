@@ -85,11 +85,37 @@ static int listen_on(int port, int* got_port)
 	return fd;
 }
 
-/* Dipanggil peer saat klien sudah menyelesaikan seluruh sekuens koneksi ke server kita.
- * Di sini kita kirim redirection (data 600 byte) — persis yang dilakukan connection broker. */
-static BOOL on_post_connect(freerdp_peer* peer)
+/* hook lifecycle peer: hanya mencatat seberapa jauh sekuens koneksi berjalan */
+static BOOL on_caps(freerdp_peer* peer)
 {
-	printf("  [server] PostConnect: klien selesai handshake — mengirim redirection\n");
+	(void)peer;
+	printf("  [server] hook Capabilities dipanggil (klien sudah mengirim kapabilitas)\n");
+	fflush(stdout);
+	return TRUE;
+}
+
+static BOOL on_client_caps(freerdp_peer* peer)
+{
+	(void)peer;
+	printf("  [server] hook ClientCapabilities dipanggil\n");
+	fflush(stdout);
+	return TRUE;
+}
+
+static BOOL on_activate(freerdp_peer* peer)
+{
+	(void)peer;
+	printf("  [server] hook Activate dipanggil (klien aktif)\n");
+	fflush(stdout);
+	return TRUE;
+}
+
+/* kirim redirection sekali (dipakai dari PostConnect maupun dari pemantau connected) */
+static BOOL send_redirection(freerdp_peer* peer, const char* why)
+{
+	if (g_redir_sent)
+		return TRUE;
+	printf("  [server] mengirim redirection (pemicu: %s)\n", why);
 	fflush(stdout);
 
 	rdpRedirection* r = redirection_new();
@@ -122,7 +148,16 @@ static BOOL on_post_connect(freerdp_peer* peer)
 	}
 	fflush(stdout);
 	redirection_free(r);
-	return TRUE;
+	return g_redir_sent;
+}
+
+/* Dipanggil peer saat klien sudah menyelesaikan seluruh sekuens koneksi ke server kita.
+ * Di sini kita kirim redirection (data 600 byte) — persis yang dilakukan connection broker. */
+static BOOL on_post_connect(freerdp_peer* peer)
+{
+	printf("  [server] PostConnect: klien selesai handshake — mengirim redirection\n");
+	fflush(stdout);
+	return send_redirection(peer, "PostConnect");
 }
 
 static void* server_thread(void* arg)
@@ -168,6 +203,9 @@ static void* server_thread(void* arg)
 				if (key)
 					(void)freerdp_settings_set_pointer_len(ps, FreeRDP_RdpServerRsaKey, key, 1);
 			}
+			peer->Capabilities = on_caps;
+			peer->ClientCapabilities = on_client_caps;
+			peer->Activate = on_activate;
 			peer->PostConnect = on_post_connect;
 			if (!peer->Initialize(peer))
 			{
@@ -178,15 +216,25 @@ static void* server_thread(void* arg)
 			printf("  [server] peer siap — melayani PDUs\n");
 			fflush(stdout);
 			/* layani sampai redirection terkirim (atau peer putus / batas waktu) */
-			for (int i = 0; i < 6000; i++)
+			int announced = 0;
+			for (int i = 0; i < 12000; i++)
 			{
 				if (!peer->CheckFileDescriptor(peer))
 				{
-					printf("  [server] peer berhenti setelah %d iterasi\n", i);
+					printf("  [server] peer berhenti setelah %d iterasi (connected=%d)\n", i,
+					       (int)peer->connected);
 					fflush(stdout);
 					break;
 				}
-				if (g_redir_sent && i > 20)
+				if (!announced && peer->connected)
+				{
+					printf("  [server] peer melaporkan connected=TRUE pada iterasi %d\n", i);
+					fflush(stdout);
+					announced = 1;
+					/* jalur kedua: kirim begitu koneksi terbentuk (tak menunggu PostConnect) */
+					(void)send_redirection(peer, "peer->connected");
+				}
+				if (g_redir_sent && i > 40)
 					break;
 				nanosleep(&pause, NULL);
 			}
@@ -273,6 +321,40 @@ int main(int argc, char** argv)
 	printf("  [klien] freerdp_connect kembali: %s (redirection terkirim=%d, koneksi ke-2=%d)\n",
 	       ok ? "TRUE" : "FALSE", g_redir_sent, g_second_conn);
 	fflush(stdout);
+
+	/* Klien nyata memproses PDU masuk di loop ini — di sinilah redirection diterapkan. */
+	if (ok)
+	{
+		const struct timespec p = {0, 5000000L};
+		printf("  [klien] masuk loop penerimaan (freerdp_check_fds)\n");
+		fflush(stdout);
+		for (int i = 0; i < 400; i++)
+		{
+			if (!freerdp_check_fds(instance))
+			{
+				printf("  [klien] check_fds FALSE pada iterasi %d\n", i);
+				fflush(stdout);
+				break;
+			}
+			if (g_redir_sent)
+				break;
+			nanosleep(&p, NULL);
+		}
+		printf("  [klien] setelah loop: redirection terkirim=%d, koneksi ke-2=%d\n", g_redir_sent,
+		       g_second_conn);
+		fflush(stdout);
+		if (g_redir_sent && !g_second_conn)
+		{
+			/* Redirection sudah diterapkan ke settings; menyambung ke target adalah tugas
+			 * aplikasi klien (API resmi: freerdp_reconnect). Di sinilah permintaan negosiasi
+			 * baru dibangun — dengan routing token 600 byte dari PDU tadi. */
+			printf("  [klien] memanggil freerdp_reconnect → menyambung ke target redirect\n");
+			fflush(stdout);
+			const BOOL rc = freerdp_reconnect(instance);
+			printf("  [klien] freerdp_reconnect kembali: %s\n", rc ? "TRUE" : "FALSE");
+			fflush(stdout);
+		}
+	}
 
 	(void)freerdp_disconnect(instance);
 	freerdp_context_free(instance);
