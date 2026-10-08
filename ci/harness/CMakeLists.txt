@@ -18,13 +18,14 @@ target_include_directories(harness_nego PRIVATE
   "${FREERDP_SRC}/libfreerdp"
   "${FREERDP_SRC}/winpr/include")
 
-# nama target ekspor berbeda antar rilis FreeRDP → coba beberapa
+# nama target ekspor berbeda antar rilis FreeRDP → Client opsional (harness hanya butuh core/nego)
+set(FRDP_LIBS "")
 if(TARGET FreeRDP::Client)
-  set(FRDP_LIBS FreeRDP::Client)
+  list(APPEND FRDP_LIBS FreeRDP::Client)
 elseif(TARGET freerdp-client3)
-  set(FRDP_LIBS freerdp-client3)
-else()
-  set(FRDP_LIBS freerdp-client2)
+  list(APPEND FRDP_LIBS freerdp-client3)
+elseif(TARGET freerdp-client2)
+  list(APPEND FRDP_LIBS freerdp-client2)
 endif()
 if(TARGET FreeRDP::Common)
   list(APPEND FRDP_LIBS FreeRDP::Common)
