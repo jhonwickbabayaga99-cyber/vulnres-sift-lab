@@ -58,6 +58,12 @@ jobs:
           python3 src/sift.py triage  --in state/findings-nego.json --out state/clusters-nego.json
           python3 src/sift.py analyze --db state/freerdp.db --slice state/slice-core.json --out state/findings-core.json
           python3 src/sift.py triage  --in state/findings-core.json --out state/clusters-core.json
+          python3 src/sift.py slice  --db state/freerdp.db --dir channels/urbdrc --out state/slice-urbdrc.json
+          python3 src/sift.py analyze --db state/freerdp.db --slice state/slice-urbdrc.json --out state/findings-urbdrc.json
+          python3 src/sift.py triage  --in state/findings-urbdrc.json --out state/clusters-urbdrc.json
+
+      - name: Gate — kandidat uninit (CWE-457/908) di jalur urbdrc
+        run: python3 ci/assert_uninit.py state/clusters-urbdrc.json
 
       - name: Ringkas ke job summary
         run: |

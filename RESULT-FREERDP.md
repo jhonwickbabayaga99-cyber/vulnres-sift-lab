@@ -167,3 +167,24 @@ recall tinggi → klaster → jalur utuh → **crash di bawah ASan** (`WRITE of 
 Yang tetap benar dan penting: **temuan ini bernilai bounty 0** — sudah ada advisory dan sudah
 ditambal di `master`. Nilai sesungguhnya adalah mesinnya (§1–§4) yang bisa diarahkan ke target
 C/C++ lain yang belum ditambal.
+
+## 7. Kelas kedua ditemukan mesin sendiri: reserve-tanpa-tulis (CWE-457/908)
+
+Kosakata baru di `sift.py`: `RESERVE` (Stream_Seek/SetPosition), `CLEANER` (Stream_Write*/Zero/memset),
+`EMIT` (stream_write_and_free/channel_write/…) + tabel `reserves`. Aturan: sebuah reserve pada stream
+**keluaran** (parameter `out` atau hasil `Stream_New`) yang **tidak** diikuti penulisan/zero dan **tidak**
+mengembalikan stream itu (`return out;`) lalu stream tersebut dikirim keluar → kandidat `real`.
+
+Hasil pada revisi rentan yang sama (`993499447e32…`, `channels/urbdrc`):
+
+| Klaster | Baris | Cocok dengan advisory `GHSA-hw7p-5h2r-83gq` |
+|---|---|---|
+| `[real] urb_write_completion` | **134** | ya — "reserves OutputBufferSize bytes with Stream_Seek, without writing or zeroing" |
+| `[real] urb_isoch_transfer_cb` | **893** | ya — "same pattern in a second completion path at data_transfer.c:892/:893" |
+
+14 kandidat `[mixed]` lain (helper control-transfer) disaring oleh triage — recall dulu, saring kemudian.
+Gate CI: `ci/assert_uninit.py` (gagal bila salah satu titik hilang) dijalankan di job `static-core`.
+
+Catatan penting & jujur: master terbaru **masih** memakai `Stream_Seek` tanpa zero (perbaikan hulu bukan
+zeroing; helper `urb_completion_payload_size()` mengembalikan `outputBufferSize` untuk transfer IN).
+Apakah master masih bocor **tidak** boleh diklaim dari pembacaan statis — itu urusan validasi dinamis (Blok 2/3).

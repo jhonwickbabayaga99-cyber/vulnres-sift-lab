@@ -35,6 +35,15 @@ SINK_RISKY = {"memcpy", "memmove", "strcpy", "strcat", "sprintf", "vsnprintf", "
               "Stream_Write_UINT16", "Stream_Write_INT32", "alloca", "malloc", "calloc", "realloc",
               "CopyMemory", "MoveMemory", "Stream_EnsureRemainingCapacity"}
 
+# --- kelas kedua: memakai memori TAK-TERINISIALISASI (CWE-457/908), mis. urb_write_completion ----
+# reserve = memesan ruang di stream tanpa menulis isinya; cleaner = menulis/men-zero-kan; emit = mengirim keluar.
+RESERVE = ["Stream_Seek", "Stream_Seek_UINT8", "Stream_Seek_UINT16", "Stream_Seek_UINT32", "Stream_Seek_UINT64",
+           "Stream_Seek_BOOL", "Stream_SetPosition"]
+CLEANER = ["Stream_Zero", "Stream_SafeZero", "Stream_Write", "Stream_Write_UINT8", "Stream_Write_UINT16",
+           "Stream_Write_UINT32", "Stream_Write_UINT64", "Stream_Write_INT32", "Stream_Write_BOOL",
+           "Stream_Write_UTF16_String", "memset", "ZeroMemory", "SecureZeroMemory", "FillMemory"]
+EMIT = ["stream_write_and_free", "channel_write", "transport_write", "Stream_Length", "Stream_GetPointer"]
+
 # kosakata khusus-target: pasangan setter/getter (mis. FreeRDP: freerdp_settings_set_pointer_len / _get_pointer)
 SETTER = re.compile(r"_set_(?:pointer_len|pointer|uint64|uint32|uint16|uint8|int64|int32|int16|int8|string|bool|size_t)$")
 GETTER = re.compile(r"_get_(?:pointer|uint64|uint32|uint16|uint8|int64|int32|string|bool)\s*\(\s*([A-Za-z_]\w*)\s*,\s*([A-Za-z_]\w*)\s*\)")
@@ -49,6 +58,10 @@ CREATE TABLE IF NOT EXISTS snks(func_id INT, name TEXT, file TEXT, line INT, ris
 CREATE TABLE IF NOT EXISTS fieldwrites(var TEXT, field TEXT, src TEXT, file TEXT, line INT, func TEXT, dari_param INT, tainted INT);
 CREATE TABLE IF NOT EXISTS params(func_id INT, idx INT, name TEXT);
 CREATE TABLE IF NOT EXISTS taint_calls(caller_func TEXT, callee TEXT, arg_idx INT, arg_text TEXT, file TEXT, line INT);
+CREATE TABLE IF NOT EXISTS reserves(id INTEGER PRIMARY KEY, func_id INT, name TEXT, file TEXT, line INT, args TEXT,
+                                    stream_var TEXT, zeroed INT, writes_after INT, emits INT, stream_from TEXT, func TEXT,
+                                    returns INT);
+CREATE INDEX IF NOT EXISTS i_reserves_file ON reserves(file);
 CREATE INDEX IF NOT EXISTS i_calls_caller ON calls(caller_id);
 CREATE INDEX IF NOT EXISTS i_calls_callee ON calls(callee);
 CREATE INDEX IF NOT EXISTS i_funcs_name ON funcs(name);
@@ -154,6 +167,60 @@ def index_file(conn, path: pathlib.Path, root: pathlib.Path, parsers):
                 argt = (txt(raw, a_node)[:220] if a_node is not None else "")
                 conn.execute("INSERT INTO snks VALUES (?,?,?,?,?,?)",
                              (fid, callee, rel, c.start_point[0] + 1, 1 if callee in SINK_RISKY else 0, argt))
+        # --- kelas kedua: reserve TANPA tulis pada stream keluaran (CWE-457/908) ---
+        seq = sorted(find_all(body, {"call_expression"}), key=lambda n: n.start_byte)
+        cl = []
+        for c2 in seq:
+            fn2 = c2.child_by_field_name("function")
+            nm2 = txt(raw, fn2).split("->")[-1].split(".")[-1].strip() if fn2 is not None else "?"
+            a2 = c2.child_by_field_name("arguments")
+            argt2 = " ".join(txt(raw, a2).split())[:200] if a2 is not None else ""
+            first = ""
+            if a2 is not None:
+                cand = [x for x in a2.children if x.type not in (",", "(", ")")]
+                if cand:
+                    first = txt(raw, cand[0]).strip()
+            cl.append((nm2, c2.start_point[0] + 1, argt2, first))
+        local_streams = set()
+        for n2 in find_all(body, {"init_declarator", "assignment_expression"}):
+            l2 = n2.child_by_field_name("declarator") or n2.child_by_field_name("left")
+            r2 = n2.child_by_field_name("value") or n2.child_by_field_name("right")
+            if l2 is None or r2 is None:
+                continue
+            lv, rv = txt(raw, l2).strip(), txt(raw, r2).strip()
+            if re.fullmatch(r"[A-Za-z_]\w*", lv) and re.search(r"\b(Stream_New|StreamPool_Take|create_\w*header\w*)\s*\(", rv):
+                local_streams.add(lv)
+        for ci, (cname, cline, cargs, cvar) in enumerate(cl):
+            if cname not in RESERVE or not re.fullmatch(r"[A-Za-z_]\w*", cvar or ""):
+                continue
+            if re.search(r",\s*(TRUE|1)\s*\)", cargs):        # Stream_Seek(s, n, TRUE) → di-zero-kan
+                continue
+            writes_after = emits = 0
+            for cname2, _cl2, cargs2, _cv2 in cl[ci + 1:]:
+                if not re.search(r"\b%s\b" % re.escape(cvar), cargs2):
+                    continue
+                if cname2 in CLEANER:
+                    writes_after = 1
+                if cname2 in EMIT:
+                    emits = 1
+            if writes_after:
+                continue
+            if cvar in plist:
+                from_ = "param:out" if re.search(r"(^|_)out$|^out", cvar, re.I) else "param:" + cvar
+            elif cvar in local_streams:
+                from_ = "local:stream"
+            else:
+                from_ = "unknown"
+            if from_ == "unknown" and not emits:
+                continue                                       # bukan stream keluaran → hemat sinyal
+            # hanya `return <var>;` (stream dikembalikan UTUH) yang melemahkan bukti —
+            # `return emit(..., out);` mengembalikan hasil panggilan, bukan stream-nya
+            returns = 1 if any(re.fullmatch(r"return\s+%s\s*;" % re.escape(cvar), " ".join(txt(raw, r).split()))
+                               for r in find_all(body, {"return_statement"})
+                               if r.start_point[0] + 1 > cline) else 0
+            conn.execute("INSERT INTO reserves (func_id,name,file,line,args,stream_var,zeroed,writes_after,emits,stream_from,func,returns)"
+                         " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                         (fid, cname, rel, cline, cargs, cvar, 0, writes_after, emits, from_, name, returns))
         # --- taint: variabel terisi SOURCE → penulisan field (pola f-007) + penghubung antar-prosedur ---
         tainted: set = set()
         paramset = set(plist)
@@ -289,6 +356,9 @@ def cmd_index(a):
           % (files, n, ty, e, unresolved))
     print("      sumber potensial: %d · sink: %d · penulisan-field-dari-sumber: %d (propagasi +%d)"
           % (*[conn.execute("SELECT COUNT(*) FROM " + t).fetchone()[0] for t in ("srcs", "snks", "fieldwrites")], n_prop))
+    nres = conn.execute("SELECT COUNT(*) FROM reserves").fetchone()[0]
+    nres_out = conn.execute("SELECT COUNT(*) FROM reserves WHERE stream_from LIKE 'param:out%' OR stream_from LIKE 'local:%'").fetchone()[0]
+    print("      reserve-tanpa-tulis (CWE-457/908): %d kandidat (%d pada stream keluaran)" % (nres, nres_out))
     print("      graf: %s (%.1fs)" % (db, time.time() - t0))
     return 0
 
@@ -380,7 +450,9 @@ def cmd_slice(a):
             "srcs": [[n, f, l] for n, f, l in conn.execute("SELECT name,file,line FROM srcs") if f in fset],
             "snks": [[n, f, l, ar] for n, f, l, ar in conn.execute("SELECT name,file,line,args FROM snks") if f in fset],
             "fieldwrites": [[v, fi, s, f, l, fu] for v, fi, s, f, l, fu in
-                            conn.execute("SELECT var,field,src,file,line,func FROM fieldwrites") if f in fset]}
+                            conn.execute("SELECT var,field,src,file,line,func FROM fieldwrites") if f in fset],
+            "reserves": [[n, f, l, ar, sv, sf, em, fu, rt] for n, f, l, ar, sv, sf, em, fu, rt in
+                         conn.execute("SELECT name,file,line,args,stream_var,stream_from,emits,func,returns FROM reserves") if f in fset]}
     out = pathlib.Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(data, indent=1), encoding="utf-8")
     print("  [+] slice '%s': %d fungsi · %d berkas · %d sumber · %d sink · %d penulisan-field"
@@ -502,6 +574,15 @@ def cmd_analyze(a):
             temuan.append({"kind": "same_function_src_sink", "key": "%s@%d" % (f, l), "sink": sname,
                            "file": f, "line": l, "status": "candidate",
                            "why": "fungsi ini membaca data serangan dan memanggil %s" % sname})
+    # (5) kelas kedua: reserve tanpa tulis pada stream keluaran → kebocoran memori tak-terinisialisasi
+    for row in sl.get("reserves", []):
+        nm5, f5, l5, ar5, sv5, sf5, em5, fu5, rt5 = (list(row) + [None] * 9)[:9]
+        temuan.append({"kind": "uninit_reserve", "key": "uninit:%s:%s:%s" % (f5, fu5, sv5), "sink": nm5, "sink_args": ar5,
+                       "stream_from": sf5, "emits": em5, "returns": rt5, "file": f5, "line": l5, "func": fu5,
+                       "status": "candidate",
+                       "why": "%s(%s) memesan ruang di stream '%s' tanpa penulisan maupun zero setelahnya (asal stream: %s)%s%s"
+                              % (nm5, (ar5 or "")[:60], sv5, sf5, " lalu stream itu dikirim keluar" if em5 else "",
+                                 "; stream dikembalikan ke pemanggil" if rt5 else "")})
     out = pathlib.Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"slice": sl.get("entry"), "findings": temuan}, indent=1), encoding="utf-8")
     print("  [+] analysis: %d temuan (recall dulu; triage yang menyaring)" % len(temuan))
@@ -525,7 +606,16 @@ def cmd_triage(a):
         punya_write = any(x["kind"].startswith(("field_taint_write", "param_taint_write")) for x in c["findings"])
         sink_kuat = any(x["kind"] == "field_taint_sink" for x in c["findings"])
         sink_lemah = any(x["kind"] in ("sink_nearby", "same_function_src_sink") for x in c["findings"])
-        if punya_write and sink_kuat:
+        uninit = [x for x in c["findings"] if x["kind"] == "uninit_reserve"]
+        uninit_out = any((x.get("stream_from") or "").startswith(("param:out", "local:")) for x in uninit)
+        uninit_emit = any(x.get("emits") for x in uninit)
+        uninit_ret = any(x.get("returns") for x in uninit)
+        if uninit and uninit_out and uninit_emit and not uninit_ret:
+            cls, alasan = "real", ("reserve tanpa tulis pada stream keluaran, stream TIDAK dikembalikan ke pemanggil, "
+                                   "lalu dikirim keluar → kebocoran memori tak-terinisialisasi (CWE-457/908)")
+        elif uninit:
+            cls, alasan = "mixed", "reserve tanpa tulis terlihat; asal stream keluaran / pengiriman belum terbukti"
+        elif punya_write and sink_kuat:
             cls, alasan = "real", "nilai bertaint tersimpan ke field DAN field itu muncul di argumen sink → jalur utuh"
         elif punya_write and sink_lemah:
             cls, alasan = "mixed", "field bertaint + sink di dekatnya, tapi field tidak terlihat di argumen sink"
