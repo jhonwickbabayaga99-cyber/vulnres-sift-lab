@@ -230,7 +230,8 @@ int main(int argc, char** argv)
 	memcpy(g_token + 24, "VULNRES-REMOTE-TOKEN", 20);
 
 	printf("harness remote — server FreeRDP asli (peer) x klien FreeRDP asli\n");
-	printf("  LoadBalanceInfo (penanda): %s\n", (char*)g_token + 24);
+	printf("  LoadBalanceInfo (penanda): %.20s (token %d byte, tanpa NUL — dicetak terbatas)\n",
+	       (const char*)g_token + 24, TOKEN_LEN);
 
 	int port = 0;
 	g_lfd = listen_on(0, &port);
