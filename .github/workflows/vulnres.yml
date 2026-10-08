@@ -138,15 +138,16 @@ jobs:
           echo "--- isi prefix install ---"; ls "$HOME/frdp/lib" | head -20
           echo "--- pkg-config freerdp3 ---"; pkg-config --cflags --libs freerdp3 || true
           echo "--- pkg-config --static ---"; pkg-config --static --libs freerdp3 winpr3 || true
-          # link statis (FREERDP_LOCAL tak diekspor dari .so) → pkg-config jadi sumber kebenaran
+          # header publik+generated dari prefix install (pkg-config cflags), header internal dari sumber
+          CFLAGS=$(pkg-config --cflags freerdp3 winpr3 2>/dev/null || echo "")
           LIBS=$(pkg-config --static --libs freerdp3 winpr3 2>/dev/null \
                  || pkg-config --libs freerdp3 winpr3 2>/dev/null \
                  || echo "-lfreerdp3 -lwinpr3")
+          echo "CFLAGS: $CFLAGS"
           clang -fsanitize=address -fno-omit-frame-pointer -g -O1 \
-            -I"$HOME/frdp/include" \
-            -I"$PWD/freerdp-src/include" -I"$PWD/freerdp-src/libfreerdp/core" \
-            -I"$PWD/freerdp-src/libfreerdp" -I"$PWD/freerdp-src/winpr/include" \
-            -I"$PWD/build-freerdp/winpr/include" \
+            $CFLAGS \
+            -I"$PWD/freerdp-src/libfreerdp/core" -I"$PWD/freerdp-src/libfreerdp" \
+            -I"$PWD/freerdp-src/winpr/include" -I"$PWD/freerdp-src/include" \
             ci/harness/harness_nego.c -o build-harness/harness_nego \
             -L"$HOME/frdp/lib" $LIBS -lssl -lcrypto -lz -lpthread -lm -ldl
           ls -l build-harness/harness_nego
