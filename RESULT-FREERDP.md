@@ -221,3 +221,48 @@ Cara harness menembus jalur ini (semua fakta diverifikasi dari sumber @`99349944
 Catatan kejujuran: gate pertama menandai "BELUM TERBUKTI" bukan karena pengukurannya salah, melainkan
 karena bug di harness (cabang kontrol lupa menyetel `exit_code = 0`). Diperbaiki; angka bocoran
 (100% pola perturb) sudah benar sejak run pertama.
+
+## 9. Rantai menjadi KENDALI ALUR EKSEKUSI — TERBUKTI ✅
+
+Harness `ci/harness/harness_chain.c` (job `urbdrc-leak`, langkah rantai), run `37769189299`.
+Salinan log: `evidence/chain-hijack-37769189299.log`.
+
+```
+[kalibrasi] penggaris mulai di payload[0] (nilai 0x06) ⇒ token[517] → B[0] ⇒ field `fn` ⊂ token[525]
+[kalibrasi] byte target nanti di token[525]: 0x0000414141414141
+setelah overflow: korban canary=0x0000414141414141 fn=0x0000414141414141 tail=0x0000414141414141
+korban tertimpa dengan alamat pilihan kita → memanggil pointer itu
+SINYAL 11: alamat fault = 0x0000414141414141 (diinginkan 0x0000414141414141)
+HIJACK TERBUKTI: pc diarahkan ke alamat yang kita tanam di token
+VERDICT: TERBUKTI — overflow menjadi control-flow hijack
+```
+
+Yang dibuktikan, berurutan:
+
+1. **Grooming** — pasangan chunk 512 B dicari yang benar-benar bersebelahan (`B - A == 528`), `A` dibebaskan
+   sebagai tindakan terakhir → tcache LIFO → `Stream_New(nullptr, 512)` mengambil slot itu, `B` persis di belakangnya.
+2. **Overflow** — `nego_set_routing_token(nego, token, 600)` + `nego_send_negotiation_request(nego)` menulis
+   600 byte ke buffer 512 → menimpa header chunk `B` dan 3 field korban.
+3. **Kendali penuh** — `canary`, `fn`, `tail` korban = **alamat kanonik yang kita tanam** `0x0000414141414141`.
+4. **Hijack** — memanggil `B->fn` melompat ke alamat itu → `SIGSEGV` dengan `si_addr` **sama persis** dengan
+   alamat pilihan ⇒ `pc` dikuasai penyerang.
+
+### Kalibrasi offset (mengapa ini tidak ditebak)
+
+Penulisan token dimulai pada offset **11** di dalam stream (`TPDU_CONNECTION_REQUEST_LENGTH`), sehingga
+`token[i]` mendarat di `buffer + 11 + i`. Dengan `B` di `A + 528`:
+
+```
+B[0] ← token[528 − 11] = token[517]        ⇒  fn (payload+8) ⊂ token[525]
+```
+
+Harness **mengukur** ini di runner (penggaris byte unik di `token[512..599]`, dibaca kembali dari payload
+korban) alih-alih mengandalkan model: dua penurunan (pengukuran penggaris dan offset TPDU) menghasilkan
+angka yang sama, `517`. Harness menolak mengklaim bila grooming gagal, penggaris tak terbaca, pointer tak
+tertimpa, atau alamat fault ≠ alamat pilihan — jadi "TERBUKTI" di sini tidak bisa muncul dari kebetulan.
+
+### Catatan konfigurasi (jujur)
+
+Overflow ini berjalan pada build dengan `WITH_VERBOSE_WINPR_ASSERT=OFF` (konfigurasi paket/CI kita). Dengan
+assert verbose menyala, `Stream_Write` menahan lebih dulu — tercatat sebagai run #19 yang gagal dan
+diperbaiki di run #20.
