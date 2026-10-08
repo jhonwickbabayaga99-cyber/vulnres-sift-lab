@@ -49,3 +49,17 @@ git push -u origin main
 ## Catatan etika/ruang lingkup
 Harness ini menyerang **instance FreeRDP yang kita bangun sendiri** di runner (lab), bukan sistem
 orang lain. Untuk target bounty: hanya yang sudah memberi izin dan sesuai aturan program.
+
+## Cara harness dibangun (diperbarui)
+
+Harness **tidak** lagi dibangun lewat proyek CMake terpisah: `find_package(FreeRDP)` tidak mengekspor
+target yang bisa dipakai untuk build minimal (`WITH_CLIENT=OFF`), dan cabang fallback menghasilkan
+`-lfreerdp2` yang tidak ada. Sekarang workflow memanggil clang langsung:
+
+- header internal dari pohon sumber (`libfreerdp/core`, `libfreerdp`, `winpr/include`) + prefix install;
+- lib dari `pkg-config --static --libs freerdp3 winpr3` (dengan `PKG_CONFIG_PATH` ke prefix install);
+- `-fsanitize=address` di compile **dan** link.
+
+Alasan teknis: `nego_*` dan `transport_new()` ditandai `FREERDP_LOCAL` (tidak diekspor dari .so),
+jadi wajib link statis. Revisi target dipin lewat env `FREERDP_COMMIT` — saat ini revisi **rentan**
+(`993499447e32…`, 2026-06-25); perbaikannya ada di `70d05577a3a1` (2026-08-19, "fix capacity checks").
