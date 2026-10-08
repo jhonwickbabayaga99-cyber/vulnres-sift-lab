@@ -19,7 +19,7 @@ permissions:
 env:
   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
   # commit yang dianalisis artikel Quarkslab (bisa diganti)
-  FREERDP_COMMIT: 993499447
+  FREERDP_COMMIT: 993499447e32344370a16936c8434317952df4e3
 
 jobs:
   static-core:

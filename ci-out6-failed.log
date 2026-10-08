@@ -1,0 +1,827 @@
+dynamic asan (build + harness)	UNKNOWN STEP	﻿2026-10-08T05:37:56.8523351Z Current runner version: '2.337.0'
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8555657Z ##[group]Runner Image Provisioner
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8556806Z Hosted Compute Agent
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8557418Z Version: 20260901.588
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8558191Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8558959Z Build Date: 2026-09-01T19:56:44Z
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8560028Z Worker ID: {3df014f1-2a4c-400c-96ad-dba63101ab37}
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8560846Z Azure Region: northcentralus
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8561492Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8563031Z ##[group]Operating System
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8563883Z Ubuntu
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8564431Z 24.04.5
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8564996Z LTS
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8565544Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8566119Z ##[group]Runner Image
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8567261Z Image: ubuntu-24.04
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8567864Z Version: 20260927.320.1
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8569573Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8571242Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8572313Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8573436Z ##[group]GITHUB_TOKEN Permissions
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8575777Z Contents: read
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8576441Z Metadata: read
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8577084Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8579581Z Secret source: Actions
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8580672Z Cache mode: write
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.8581671Z Prepare workflow directory
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.9153256Z Prepare all required actions
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:56.9225324Z Getting action download info
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.1515667Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.2393877Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.4590049Z Complete job name: dynamic asan (build + harness)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5396991Z ##[group]Run actions/checkout@v4
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5397954Z with:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5398530Z   repository: jhonwickbabayaga99-cyber/vulnres-sift-lab
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5402652Z   token: ***
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5403117Z   ssh-strict: true
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5403585Z   ssh-user: git
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5404053Z   persist-credentials: true
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5404583Z   clean: true
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5405049Z   sparse-checkout-cone-mode: true
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5405587Z   fetch-depth: 1
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5406043Z   fetch-tags: false
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5406509Z   show-progress: true
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5406983Z   lfs: false
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5407429Z   submodules: false
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5407904Z   set-safe-directory: true
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5408450Z   allow-unsafe-pr-checkout: false
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5409509Z env:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5410068Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5410731Z   FREERDP_COMMIT: 993499447
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.5411261Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6498965Z Syncing repository: jhonwickbabayaga99-cyber/vulnres-sift-lab
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6502273Z ##[group]Getting Git version info
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6503507Z Working directory is '/home/runner/work/vulnres-sift-lab/vulnres-sift-lab'
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6505493Z [command]/usr/bin/git version
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6527168Z git version 2.55.0
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6560545Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6568158Z Temporarily overriding HOME='/home/runner/work/_temp/578db362-5d4e-4e87-88f1-5a233b7092e9' before making global git config changes
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6570782Z Adding repository directory to the temporary git global config as a safe directory
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6573714Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vulnres-sift-lab/vulnres-sift-lab
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6630031Z Deleting the contents of '/home/runner/work/vulnres-sift-lab/vulnres-sift-lab'
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6634324Z ##[group]Initializing the repository
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6639492Z [command]/usr/bin/git init /home/runner/work/vulnres-sift-lab/vulnres-sift-lab
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6760774Z hint: Using 'master' as the name for the initial branch. This default branch name
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6766358Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6768373Z hint: to use in all of your new repositories, which will suppress this warning,
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6770046Z hint: call:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6770873Z hint:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6771944Z hint: 	git config --global init.defaultBranch <name>
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6773192Z hint:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6774326Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6776098Z hint: 'development'. The just-created branch can be renamed via this command:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6777630Z hint:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6778542Z hint: 	git branch -m <name>
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6779732Z hint:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6780960Z hint: Disable this message with "git config set advice.defaultBranchName false"
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6783533Z Initialized empty Git repository in /home/runner/work/vulnres-sift-lab/vulnres-sift-lab/.git/
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6787178Z [command]/usr/bin/git remote add origin https://github.com/jhonwickbabayaga99-cyber/vulnres-sift-lab
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6839664Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6842058Z ##[group]Disabling automatic garbage collection
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6848499Z [command]/usr/bin/git config --local gc.auto 0
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6893773Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6894577Z ##[group]Setting up auth
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6895356Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.6930047Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.7304829Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.7344963Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.7592785Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.7633211Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.7869496Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.7912938Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.7913827Z ##[group]Fetching the repository
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:57.7923928Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2074f3d0b4cc5dba98bdaddb1fce978e410286ca:refs/remotes/origin/main
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0577978Z From https://github.com/jhonwickbabayaga99-cyber/vulnres-sift-lab
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0579447Z  * [new ref]         2074f3d0b4cc5dba98bdaddb1fce978e410286ca -> origin/main
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0582796Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0584124Z ##[group]Determining the checkout info
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0585637Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0592293Z [command]/usr/bin/git sparse-checkout disable
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0651057Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0686367Z ##[group]Checking out the ref
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0691307Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0786583Z Switched to a new branch 'main'
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0793481Z branch 'main' set up to track 'origin/main'.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0799438Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0844166Z [command]/usr/bin/git log -1 --format=%H
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.0872485Z 2074f3d0b4cc5dba98bdaddb1fce978e410286ca
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1099338Z ##[group]Run sudo apt-get update -qq
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1100096Z ^[[36;1msudo apt-get update -qq^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1101203Z ^[[36;1msudo apt-get install -y -qq clang lld cmake ninja-build pkg-config libssl-dev zlib1g-dev \^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1102325Z ^[[36;1m  libavcodec-dev libavutil-dev libswscale-dev libjpeg-dev libfuse3-dev^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1103152Z ^[[36;1mclang --version | head -1^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1103729Z ^[[36;1mcmake --version | head -1^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1373902Z shell: /usr/bin/bash -e {0}
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1374475Z env:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1375027Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1375719Z   FREERDP_COMMIT: 993499447
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:37:58.1376227Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0120568Z (Reading database ... 
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0121280Z (Reading database ... 5%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0121766Z (Reading database ... 10%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0122464Z (Reading database ... 15%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0123062Z (Reading database ... 20%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0123536Z (Reading database ... 25%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0125076Z (Reading database ... 30%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0125784Z (Reading database ... 35%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0126366Z (Reading database ... 40%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0126918Z (Reading database ... 45%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0127442Z (Reading database ... 50%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.0205616Z (Reading database ... 55%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.1428438Z (Reading database ... 60%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.3331182Z (Reading database ... 65%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.5365634Z (Reading database ... 70%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.7028905Z (Reading database ... 75%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.8406099Z (Reading database ... 80%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:08.9840305Z (Reading database ... 85%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.1403245Z (Reading database ... 90%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.2443325Z (Reading database ... 95%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.2443862Z (Reading database ... 100%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.2444461Z (Reading database ... 202296 files and directories currently installed.)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.2497531Z Preparing to unpack .../libssl-dev_3.0.13-0ubuntu3.16_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.2546583Z Unpacking libssl-dev:amd64 (3.0.13-0ubuntu3.16) over (3.0.13-0ubuntu3.15) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.3712386Z Preparing to unpack .../libssl3t64_3.0.13-0ubuntu3.16_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.3751300Z Unpacking libssl3t64:amd64 (3.0.13-0ubuntu3.16) over (3.0.13-0ubuntu3.15) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4404579Z Setting up libssl3t64:amd64 (3.0.13-0ubuntu3.16) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4803819Z (Reading database ... 
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4804484Z (Reading database ... 5%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4811954Z (Reading database ... 10%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4812534Z (Reading database ... 15%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4812983Z (Reading database ... 20%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4813474Z (Reading database ... 25%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4813975Z (Reading database ... 30%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4814399Z (Reading database ... 35%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4814845Z (Reading database ... 40%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4815252Z (Reading database ... 45%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4815725Z (Reading database ... 50%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4827238Z (Reading database ... 55%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4955096Z (Reading database ... 60%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.4986073Z (Reading database ... 65%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5009496Z (Reading database ... 70%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5050634Z (Reading database ... 75%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5085716Z (Reading database ... 80%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5116105Z (Reading database ... 85%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5299580Z (Reading database ... 90%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5581888Z (Reading database ... 95%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5583083Z (Reading database ... 100%
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5584016Z (Reading database ... 202296 files and directories currently installed.)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5625219Z Preparing to unpack .../00-openssl_3.0.13-0ubuntu3.16_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.5656575Z Unpacking openssl (3.0.13-0ubuntu3.16) over (3.0.13-0ubuntu3.15) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.6682333Z Selecting previously unselected package clang.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.6815551Z Preparing to unpack .../01-clang_1%3a18.0-59~exp2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.6823219Z Unpacking clang (1:18.0-59~exp2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7034091Z Selecting previously unselected package libjsoncpp25:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7158804Z Preparing to unpack .../02-libjsoncpp25_1.9.5-6build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7167056Z Unpacking libjsoncpp25:amd64 (1.9.5-6build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7385067Z Selecting previously unselected package librhash0:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7512745Z Preparing to unpack .../03-librhash0_1.4.3-3build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7521861Z Unpacking librhash0:amd64 (1.4.3-3build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7756129Z Selecting previously unselected package cmake-data.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7881140Z Preparing to unpack .../04-cmake-data_3.28.3-1build7_all.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:09.7950693Z Unpacking cmake-data (3.28.3-1build7) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.3523171Z Selecting previously unselected package cmake.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.3664296Z Preparing to unpack .../05-cmake_3.28.3-1build7_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.3673148Z Unpacking cmake (3.28.3-1build7) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.5165862Z Selecting previously unselected package libva2:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.5293907Z Preparing to unpack .../06-libva2_2.20.0-2ubuntu0.2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.5304379Z Unpacking libva2:amd64 (2.20.0-2ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.5533811Z Selecting previously unselected package libigdgmm12:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.5662285Z Preparing to unpack .../07-libigdgmm12_22.3.17+ds1-1ubuntu1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.5672624Z Unpacking libigdgmm12:amd64 (22.3.17+ds1-1ubuntu1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.5902916Z Selecting previously unselected package intel-media-va-driver:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.6032181Z Preparing to unpack .../08-intel-media-va-driver_24.1.0+dfsg1-1ubuntu0.2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.6042076Z Unpacking intel-media-va-driver:amd64 (24.1.0+dfsg1-1ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.6745474Z Selecting previously unselected package libva-drm2:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.6872240Z Preparing to unpack .../09-libva-drm2_2.20.0-2ubuntu0.2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.6881043Z Unpacking libva-drm2:amd64 (2.20.0-2ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.7286220Z Selecting previously unselected package libva-x11-2:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.7411854Z Preparing to unpack .../10-libva-x11-2_2.20.0-2ubuntu0.2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.7420038Z Unpacking libva-x11-2:amd64 (2.20.0-2ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.7628642Z Selecting previously unselected package libvdpau1:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.7757813Z Preparing to unpack .../11-libvdpau1_1.5-2build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.7767789Z Unpacking libvdpau1:amd64 (1.5-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.7982405Z Selecting previously unselected package libvpl2.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.8147154Z Preparing to unpack .../12-libvpl2_2023.3.0-1build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.8155447Z Unpacking libvpl2 (2023.3.0-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.8385244Z Selecting previously unselected package ocl-icd-libopencl1:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.8524214Z Preparing to unpack .../13-ocl-icd-libopencl1_2.3.2-1build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.8534347Z Unpacking ocl-icd-libopencl1:amd64 (2.3.2-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.9304449Z Selecting previously unselected package libavutil58:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.9431580Z Preparing to unpack .../14-libavutil58_7%3a6.1.1-3ubuntu5_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.9440169Z Unpacking libavutil58:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.9711227Z Selecting previously unselected package libcodec2-1.2:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.9840139Z Preparing to unpack .../15-libcodec2-1.2_1.2.0-2build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:10.9848680Z Unpacking libcodec2-1.2:amd64 (1.2.0-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.0566438Z Selecting previously unselected package libdav1d7:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.0694017Z Preparing to unpack .../16-libdav1d7_1.4.1-1build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.0703452Z Unpacking libdav1d7:amd64 (1.4.1-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.0971819Z Selecting previously unselected package libgsm1:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.1097895Z Preparing to unpack .../17-libgsm1_1.0.22-1build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.1117626Z Unpacking libgsm1:amd64 (1.0.22-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.1323359Z Selecting previously unselected package libhwy1t64:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.1461740Z Preparing to unpack .../18-libhwy1t64_1.0.7-8.1build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.1469695Z Unpacking libhwy1t64:amd64 (1.0.7-8.1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.1794337Z Selecting previously unselected package libjxl0.7:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.1925169Z Preparing to unpack .../19-libjxl0.7_0.7.0-10.2ubuntu6.1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.1933570Z Unpacking libjxl0.7:amd64 (0.7.0-10.2ubuntu6.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.2263922Z Selecting previously unselected package libmp3lame0:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.2389639Z Preparing to unpack .../20-libmp3lame0_3.100-6build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.2398557Z Unpacking libmp3lame0:amd64 (3.100-6build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.2612004Z Selecting previously unselected package libopus0:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.2738197Z Preparing to unpack .../21-libopus0_1.4-1build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.2746983Z Unpacking libopus0:amd64 (1.4-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.2960796Z Selecting previously unselected package librav1e0:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.3085297Z Preparing to unpack .../22-librav1e0_0.7.1-2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.3092355Z Unpacking librav1e0:amd64 (0.7.1-2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.3404145Z Selecting previously unselected package librsvg2-2:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.3533149Z Preparing to unpack .../23-librsvg2-2_2.58.0+dfsg-1ubuntu0.1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.3540969Z Unpacking librsvg2-2:amd64 (2.58.0+dfsg-1ubuntu0.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.3991936Z Selecting previously unselected package libshine3:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.4118057Z Preparing to unpack .../24-libshine3_3.1.1-2build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.4124452Z Unpacking libshine3:amd64 (3.1.1-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.4313039Z Selecting previously unselected package libspeex1:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.4438651Z Preparing to unpack .../25-libspeex1_1.2.1-2ubuntu2.24.04.1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.4450997Z Unpacking libspeex1:amd64 (1.2.1-2ubuntu2.24.04.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.4646867Z Selecting previously unselected package libsvtav1enc1d1:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.4772804Z Preparing to unpack .../26-libsvtav1enc1d1_1.7.0+dfsg-2build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.4779261Z Unpacking libsvtav1enc1d1:amd64 (1.7.0+dfsg-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.5245001Z Selecting previously unselected package libsoxr0:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.5375203Z Preparing to unpack .../27-libsoxr0_0.1.3-4build3_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.5381516Z Unpacking libsoxr0:amd64 (0.1.3-4build3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.5581595Z Selecting previously unselected package libswresample4:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.5708863Z Preparing to unpack .../28-libswresample4_7%3a6.1.1-3ubuntu5_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.5716016Z Unpacking libswresample4:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.5915237Z Selecting previously unselected package libtheora0:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6043019Z Preparing to unpack .../29-libtheora0_1.1.1+dfsg.1-16.1build3_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6051181Z Unpacking libtheora0:amd64 (1.1.1+dfsg.1-16.1build3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6274989Z Selecting previously unselected package libtwolame0:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6401533Z Preparing to unpack .../30-libtwolame0_0.4.0-2build3_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6407783Z Unpacking libtwolame0:amd64 (0.4.0-2build3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6604158Z Selecting previously unselected package libvorbisenc2:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6728662Z Preparing to unpack .../31-libvorbisenc2_1.3.7-1build3_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6736466Z Unpacking libvorbisenc2:amd64 (1.3.7-1build3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.6944122Z Selecting previously unselected package libvpx9:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.7067564Z Preparing to unpack .../32-libvpx9_1.14.0-1ubuntu2.3_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.7075057Z Unpacking libvpx9:amd64 (1.14.0-1ubuntu2.3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.7378567Z Selecting previously unselected package libx264-164:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.7506707Z Preparing to unpack .../33-libx264-164_2%3a0.164.3108+git31e19f9-1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.7516741Z Unpacking libx264-164:amd64 (2:0.164.3108+git31e19f9-1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.7800941Z Selecting previously unselected package libx265-199:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.7931570Z Preparing to unpack .../34-libx265-199_3.5-2build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.7938555Z Unpacking libx265-199:amd64 (3.5-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.8592300Z Selecting previously unselected package libxvidcore4:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.8723012Z Preparing to unpack .../35-libxvidcore4_2%3a1.3.7-1build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.8729908Z Unpacking libxvidcore4:amd64 (2:1.3.7-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.9056335Z Selecting previously unselected package libzvbi-common.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.9212074Z Preparing to unpack .../36-libzvbi-common_0.2.42-2_all.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:11.9253720Z Unpacking libzvbi-common (0.2.42-2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.0138254Z Selecting previously unselected package libzvbi0t64:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.0266281Z Preparing to unpack .../37-libzvbi0t64_0.2.42-2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.0274570Z Unpacking libzvbi0t64:amd64 (0.2.42-2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.0518904Z Selecting previously unselected package libavcodec60:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.0649206Z Preparing to unpack .../38-libavcodec60_7%3a6.1.1-3ubuntu5_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.0657863Z Unpacking libavcodec60:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.1504295Z Selecting previously unselected package libavutil-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.1638414Z Preparing to unpack .../39-libavutil-dev_7%3a6.1.1-3ubuntu5_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.1644960Z Unpacking libavutil-dev:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.2061226Z Selecting previously unselected package libswresample-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.2193287Z Preparing to unpack .../40-libswresample-dev_7%3a6.1.1-3ubuntu5_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.2214873Z Unpacking libswresample-dev:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.2428350Z Selecting previously unselected package libavcodec-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.2561759Z Preparing to unpack .../41-libavcodec-dev_7%3a6.1.1-3ubuntu5_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.2569720Z Unpacking libavcodec-dev:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.3649378Z Selecting previously unselected package libsepol-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.3779953Z Preparing to unpack .../42-libsepol-dev_3.5-2build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.3792268Z Unpacking libsepol-dev:amd64 (3.5-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.4114610Z Selecting previously unselected package libselinux1-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.4250502Z Preparing to unpack .../43-libselinux1-dev_3.5-2ubuntu2.1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.4257201Z Unpacking libselinux1-dev:amd64 (3.5-2ubuntu2.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.4720216Z Selecting previously unselected package libfuse3-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.4858244Z Preparing to unpack .../44-libfuse3-dev_3.14.0-5build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.4866060Z Unpacking libfuse3-dev:amd64 (3.14.0-5build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.5273118Z Preparing to unpack .../45-libgl1-mesa-dri_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.5432353Z Unpacking libgl1-mesa-dri:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.5922518Z Preparing to unpack .../46-libglx-mesa0_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.5944493Z Unpacking libglx-mesa0:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.6317517Z Preparing to unpack .../47-libgbm1_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.6393239Z Unpacking libgbm1:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.6787014Z Preparing to unpack .../48-mesa-libgallium_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.6811984Z Unpacking mesa-libgallium:amd64 (25.2.8-0ubuntu0.24.04.4) over (25.2.8-0ubuntu0.24.04.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.8502422Z Selecting previously unselected package libjpeg-turbo8-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.8633150Z Preparing to unpack .../49-libjpeg-turbo8-dev_2.1.5-2ubuntu2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.8640250Z Unpacking libjpeg-turbo8-dev:amd64 (2.1.5-2ubuntu2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.8894908Z Selecting previously unselected package libjpeg8-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9024358Z Preparing to unpack .../50-libjpeg8-dev_8c-2ubuntu11_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9033536Z Unpacking libjpeg8-dev:amd64 (8c-2ubuntu11) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9234332Z Selecting previously unselected package libjpeg-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9368450Z Preparing to unpack .../51-libjpeg-dev_8c-2ubuntu11_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9376498Z Unpacking libjpeg-dev:amd64 (8c-2ubuntu11) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9583810Z Selecting previously unselected package librsvg2-common:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9723098Z Preparing to unpack .../52-librsvg2-common_2.58.0+dfsg-1ubuntu0.1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9731924Z Unpacking librsvg2-common:amd64 (2.58.0+dfsg-1ubuntu0.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:12.9980701Z Selecting previously unselected package libswscale7:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.0122264Z Preparing to unpack .../53-libswscale7_7%3a6.1.1-3ubuntu5_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.0131552Z Unpacking libswscale7:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.0368874Z Selecting previously unselected package libswscale-dev:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.0503697Z Preparing to unpack .../54-libswscale-dev_7%3a6.1.1-3ubuntu5_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.0511066Z Unpacking libswscale-dev:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.0757009Z Selecting previously unselected package lld:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.0886717Z Preparing to unpack .../55-lld_1%3a18.0-59~exp2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.0894095Z Unpacking lld:amd64 (1:18.0-59~exp2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1112445Z Selecting previously unselected package mesa-va-drivers:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1251752Z Preparing to unpack .../56-mesa-va-drivers_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1259629Z Unpacking mesa-va-drivers:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1461660Z Selecting previously unselected package mesa-vdpau-drivers:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1590587Z Preparing to unpack .../57-mesa-vdpau-drivers_25.2.8-0ubuntu0.24.04.4_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1597181Z Unpacking mesa-vdpau-drivers:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1799612Z Selecting previously unselected package ninja-build.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1927042Z Preparing to unpack .../58-ninja-build_1.11.1-2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.1933577Z Unpacking ninja-build (1.11.1-2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.2175084Z Selecting previously unselected package i965-va-driver:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.2302964Z Preparing to unpack .../59-i965-va-driver_2.4.1+dfsg1-1ubuntu0.2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.2310007Z Unpacking i965-va-driver:amd64 (2.4.1+dfsg1-1ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.2562424Z Selecting previously unselected package va-driver-all:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.2693773Z Preparing to unpack .../60-va-driver-all_2.20.0-2ubuntu0.2_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.2701133Z Unpacking va-driver-all:amd64 (2.20.0-2ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.2890558Z Selecting previously unselected package vdpau-driver-all:amd64.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3020281Z Preparing to unpack .../61-vdpau-driver-all_1.5-2build1_amd64.deb ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3026808Z Unpacking vdpau-driver-all:amd64 (1.5-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3571143Z Setting up libhwy1t64:amd64 (1.0.7-8.1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3595828Z Setting up mesa-libgallium:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3612213Z Setting up libjpeg-turbo8-dev:amd64 (2.1.5-2ubuntu2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3630543Z Setting up libspeex1:amd64 (1.2.1-2ubuntu2.24.04.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3649593Z Setting up libshine3:amd64 (3.1.1-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3667080Z Setting up libvpl2 (2023.3.0-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3684995Z Setting up libx264-164:amd64 (2:0.164.3108+git31e19f9-1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3703991Z Setting up libtwolame0:amd64 (0.4.0-2build3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3723675Z Setting up libgbm1:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3740131Z Setting up libgsm1:amd64 (1.0.22-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3757611Z Setting up libsoxr0:amd64 (0.1.3-4build3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3773458Z Setting up libcodec2-1.2:amd64 (1.2.0-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3789932Z Setting up lld:amd64 (1:18.0-59~exp2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3805879Z Setting up libgl1-mesa-dri:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3884394Z Setting up libsvtav1enc1d1:amd64 (1.7.0+dfsg-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3903336Z Setting up libigdgmm12:amd64 (22.3.17+ds1-1ubuntu1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3919737Z Setting up libxvidcore4:amd64 (2:1.3.7-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3935625Z Setting up librav1e0:amd64 (0.7.1-2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3951641Z Setting up ninja-build (1.11.1-2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3968092Z Setting up librsvg2-2:amd64 (2.58.0+dfsg-1ubuntu0.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.3985358Z Setting up libva2:amd64 (2.20.0-2ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4002982Z Setting up clang (1:18.0-59~exp2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4206840Z Setting up libopus0:amd64 (1.4-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4224583Z Setting up intel-media-va-driver:amd64 (24.1.0+dfsg1-1ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4243325Z Setting up libssl-dev:amd64 (3.0.13-0ubuntu3.16) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4261637Z Setting up libjsoncpp25:amd64 (1.9.5-6build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4279442Z Setting up libsepol-dev:amd64 (3.5-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4296815Z Setting up libjxl0.7:amd64 (0.7.0-10.2ubuntu6.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4314396Z Setting up librsvg2-common:amd64 (2.58.0+dfsg-1ubuntu0.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4370820Z Setting up libx265-199:amd64 (3.5-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4389054Z Setting up libvpx9:amd64 (1.14.0-1ubuntu2.3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4405722Z Setting up libdav1d7:amd64 (1.4.1-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4422736Z Setting up libva-drm2:amd64 (2.20.0-2ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4439662Z Setting up ocl-icd-libopencl1:amd64 (2.3.2-1build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4457868Z Setting up libvdpau1:amd64 (1.5-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4480928Z Setting up librhash0:amd64 (1.4.3-3build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4497991Z Setting up libtheora0:amd64 (1.1.1+dfsg.1-16.1build3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4515609Z Setting up cmake-data (3.28.3-1build7) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4577691Z Setting up mesa-va-drivers:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4594549Z Setting up libjpeg8-dev:amd64 (8c-2ubuntu11) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4611483Z Setting up libva-x11-2:amd64 (2.20.0-2ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4628251Z Setting up openssl (3.0.13-0ubuntu3.16) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4663851Z Setting up libzvbi-common (0.2.42-2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4683154Z Setting up libmp3lame0:amd64 (3.100-6build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4701460Z Setting up i965-va-driver:amd64 (2.4.1+dfsg1-1ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4719785Z Setting up libvorbisenc2:amd64 (1.3.7-1build3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4737574Z Setting up mesa-vdpau-drivers:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4755363Z Setting up libglx-mesa0:amd64 (25.2.8-0ubuntu0.24.04.4) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4774069Z Setting up libzvbi0t64:amd64 (0.2.42-2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4792821Z Setting up libselinux1-dev:amd64 (3.5-2ubuntu2.1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4810154Z Setting up libjpeg-dev:amd64 (8c-2ubuntu11) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4828583Z Setting up libavutil58:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4847276Z Setting up libswresample4:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4865209Z Setting up va-driver-all:amd64 (2.20.0-2ubuntu0.2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4882819Z Setting up libavcodec60:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4901265Z Setting up vdpau-driver-all:amd64 (1.5-2build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4921194Z Setting up cmake (3.28.3-1build7) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4939669Z Setting up libfuse3-dev:amd64 (3.14.0-5build1) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4956877Z Setting up libswscale7:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4974032Z Setting up libavutil-dev:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.4994919Z Setting up libswresample-dev:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.5014186Z Setting up libavcodec-dev:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.5033545Z Setting up libswscale-dev:amd64 (7:6.1.1-3ubuntu5) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.5055410Z Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.5409488Z Processing triggers for man-db (2.12.0-4build2) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.5428130Z Not building database; man-db/auto-update is not 'true'.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:13.5441906Z Processing triggers for libgdk-pixbuf-2.0-0:amd64 (2.42.10+dfsg-3ubuntu3.3) ...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.2005847Z 
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.2006453Z Running kernel seems to be up-to-date.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.2006763Z 
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.2006870Z Restarting services...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.2445592Z  /etc/needrestart/restart.d/systemd-manager
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.5662919Z  systemctl restart packagekit.service php8.3-fpm.service systemd-journald.service systemd-networkd.service systemd-resolved.service systemd-udevd.service udisks2.service
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8019878Z 
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8032737Z Service restarts being deferred:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8033868Z  systemctl restart hosted-compute-agent.service
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8034650Z  systemctl restart systemd-logind.service
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8035512Z  systemctl restart walinuxagent.service
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8035868Z 
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8036111Z No containers need to be restarted.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8036420Z 
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8036722Z User sessions running outdated binaries:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8037159Z  runner @ user manager service: systemd[1145]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8149637Z 
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:14.8150148Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:15.9821627Z Ubuntu clang version 18.1.3 (1ubuntu1)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0205755Z cmake version 3.31.6
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0253876Z ##[group]Run git clone --filter=blob:none "$FREERDP_REPO" freerdp-src
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0254400Z ^[[36;1mgit clone --filter=blob:none "$FREERDP_REPO" freerdp-src^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0254768Z ^[[36;1mcd freerdp-src^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0255045Z ^[[36;1mgit fetch --depth 1 origin "$FREERDP_COMMIT"^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0255362Z ^[[36;1mgit checkout -q FETCH_HEAD^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0255660Z ^[[36;1mecho "revisi rentan: $(git rev-parse HEAD)"^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0320863Z shell: /usr/bin/bash -e {0}
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0321114Z env:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0321408Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0321748Z   FREERDP_COMMIT: 993499447
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0321976Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:16.0418700Z Cloning into 'freerdp-src'...
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3623433Z Updating files:   0% (1/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3645526Z Updating files:   1% (30/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3668513Z Updating files:   2% (60/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3692923Z Updating files:   3% (90/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3713009Z Updating files:   4% (120/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3736330Z Updating files:   5% (150/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3764009Z Updating files:   6% (180/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3787592Z Updating files:   7% (210/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3810961Z Updating files:   8% (240/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3835384Z Updating files:   9% (270/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3855009Z Updating files:  10% (300/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3875541Z Updating files:  11% (330/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3899136Z Updating files:  12% (359/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3933846Z Updating files:  13% (389/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3969891Z Updating files:  14% (419/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.3992326Z Updating files:  15% (449/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4015426Z Updating files:  16% (479/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4029130Z Updating files:  17% (509/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4048034Z Updating files:  18% (539/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4065066Z Updating files:  19% (569/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4083475Z Updating files:  20% (599/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4104625Z Updating files:  21% (629/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4123003Z Updating files:  22% (659/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4206123Z Updating files:  23% (688/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4219921Z Updating files:  24% (718/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4244702Z Updating files:  25% (748/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4260533Z Updating files:  26% (778/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4281516Z Updating files:  27% (808/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4300369Z Updating files:  28% (838/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4321391Z Updating files:  29% (868/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4351645Z Updating files:  30% (898/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4379629Z Updating files:  31% (928/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4398327Z Updating files:  32% (958/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4415014Z Updating files:  33% (988/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4434008Z Updating files:  34% (1017/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4460915Z Updating files:  35% (1047/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4475520Z Updating files:  36% (1077/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4490320Z Updating files:  37% (1107/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4504476Z Updating files:  38% (1137/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4517405Z Updating files:  39% (1167/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4531032Z Updating files:  40% (1197/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4560797Z Updating files:  41% (1227/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4576900Z Updating files:  42% (1257/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4594095Z Updating files:  43% (1287/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4608485Z Updating files:  44% (1317/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4627079Z Updating files:  45% (1346/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4646784Z Updating files:  46% (1376/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4666275Z Updating files:  47% (1406/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4684170Z Updating files:  48% (1436/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4708868Z Updating files:  49% (1466/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4737386Z Updating files:  50% (1496/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4761592Z Updating files:  51% (1526/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4776525Z Updating files:  52% (1556/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4806082Z Updating files:  53% (1586/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4823885Z Updating files:  54% (1616/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4923896Z Updating files:  55% (1646/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4957311Z Updating files:  56% (1675/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.4986054Z Updating files:  57% (1705/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5015454Z Updating files:  58% (1735/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5050864Z Updating files:  59% (1765/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5074806Z Updating files:  60% (1795/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5096154Z Updating files:  61% (1825/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5118478Z Updating files:  62% (1855/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5139198Z Updating files:  63% (1885/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5164012Z Updating files:  64% (1915/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5182960Z Updating files:  65% (1945/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5207755Z Updating files:  66% (1975/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5229695Z Updating files:  67% (2004/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5245723Z Updating files:  68% (2034/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5280720Z Updating files:  69% (2064/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5373840Z Updating files:  70% (2094/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5390669Z Updating files:  71% (2124/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5447563Z Updating files:  72% (2154/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5465267Z Updating files:  73% (2184/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5486732Z Updating files:  74% (2214/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5507768Z Updating files:  75% (2244/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5525462Z Updating files:  76% (2274/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5550180Z Updating files:  77% (2304/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5568236Z Updating files:  78% (2333/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5596097Z Updating files:  79% (2363/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5620949Z Updating files:  80% (2393/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5642307Z Updating files:  81% (2423/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5689113Z Updating files:  82% (2453/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5706350Z Updating files:  83% (2483/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5725406Z Updating files:  84% (2513/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5745778Z Updating files:  85% (2543/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5765783Z Updating files:  86% (2573/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5787934Z Updating files:  87% (2603/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5802687Z Updating files:  88% (2633/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5819297Z Updating files:  89% (2662/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5848057Z Updating files:  90% (2692/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5868092Z Updating files:  91% (2722/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5886675Z Updating files:  92% (2752/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5905235Z Updating files:  93% (2782/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5928102Z Updating files:  94% (2812/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5947574Z Updating files:  95% (2842/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.5962888Z Updating files:  96% (2872/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.6478571Z Updating files:  97% (2902/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.6495172Z Updating files:  98% (2932/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.6512275Z Updating files:  99% (2962/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.6513026Z Updating files: 100% (2991/2991)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.6513471Z Updating files: 100% (2991/2991), done.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8060626Z fatal: couldn't find remote ref 993499447
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8098472Z ##[error]Process completed with exit code 128.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8170596Z ##[group]Run {
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8170859Z ^[[36;1m{^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8171075Z ^[[36;1m  echo "### Hasil dinamis (ASan)"^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8171464Z ^[[36;1m  if grep -q "AddressSanitizer" out/asan-run.log 2>/dev/null; then^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8171850Z ^[[36;1m    echo '```'^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8172269Z ^[[36;1m    grep -nE "AddressSanitizer|WRITE of size|READ of size|SUMMARY" out/asan-run.log | head -12^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8172733Z ^[[36;1m    echo '```'^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8172940Z ^[[36;1m  else^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8173360Z ^[[36;1m    echo "Tidak ada jejak ASan pada run ini (lihat artefak log; jalur sink mungkin butuh setup transport)."^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8173838Z ^[[36;1m  fi^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8174041Z ^[[36;1m} >> "$GITHUB_STEP_SUMMARY"^[[0m
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8240218Z shell: /usr/bin/bash -e {0}
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8240484Z env:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8240756Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8241132Z   FREERDP_COMMIT: 993499447
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8241359Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8428349Z ##[group]Run actions/upload-artifact@v4
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8428652Z with:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8428857Z   name: asan-run-artifacts
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8429611Z   path: out/
+dynamic asan (build + harness)	UNKNOWN STEP	build-harness/harness_nego
+dynamic asan (build + harness)	UNKNOWN STEP	build-freerdp/CMakeCache.txt
+dynamic asan (build + harness)	UNKNOWN STEP	
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8430026Z   retention-days: 14
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8430244Z   if-no-files-found: warn
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8430472Z   compression-level: 6
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8430688Z   overwrite: false
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8430904Z   include-hidden-files: false
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8431134Z env:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8431381Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8431722Z   FREERDP_COMMIT: 993499447
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:19.8431946Z ##[endgroup]
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.0072620Z (node:3503) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.0073947Z (Use `node --trace-deprecation ...` to show where the warning was created)
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.0131792Z Multiple search paths detected. Calculating the least common ancestor of all paths
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.0142528Z The least common ancestor is /home/runner/work/vulnres-sift-lab/vulnres-sift-lab. This will be the root directory of the artifact
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.0162542Z ##[warning]No files were found with the provided path: out/
+dynamic asan (build + harness)	UNKNOWN STEP	build-harness/harness_nego
+dynamic asan (build + harness)	UNKNOWN STEP	build-freerdp/CMakeCache.txt. No artifacts will be uploaded.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.0424321Z Post job cleanup.
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1324562Z [command]/usr/bin/git version
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1373137Z git version 2.55.0
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1414350Z Temporarily overriding HOME='/home/runner/work/_temp/819a209f-26f7-448d-9dd8-4223d601068b' before making global git config changes
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1415734Z Adding repository directory to the temporary git global config as a safe directory
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1422511Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vulnres-sift-lab/vulnres-sift-lab
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1464973Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1503757Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1798791Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1831654Z http.https://github.com/.extraheader
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1844651Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.1882283Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.2148473Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.2206041Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.2662572Z Cleaning up orphan processes
+dynamic asan (build + harness)	UNKNOWN STEP	2026-10-08T05:38:20.3138829Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+static core (sift)	UNKNOWN STEP	﻿2026-10-08T05:37:56.4408557Z Current runner version: '2.337.0'
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4440040Z ##[group]Runner Image Provisioner
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4441099Z Hosted Compute Agent
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4441981Z Version: 20260901.588
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4443012Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4444021Z Build Date: 2026-09-01T19:56:44Z
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4444924Z Worker ID: {07738a9d-b899-441d-9b8a-89692f42a000}
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4445795Z Azure Region: eastus
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4446579Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4448681Z ##[group]Operating System
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4449429Z Ubuntu
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4450197Z 24.04.5
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4450825Z LTS
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4451506Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4452283Z ##[group]Runner Image
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4453180Z Image: ubuntu-24.04
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4454009Z Version: 20260927.320.1
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4455574Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4457643Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4458798Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4460662Z ##[group]GITHUB_TOKEN Permissions
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4463161Z Contents: read
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4463959Z Metadata: read
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4464637Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4466876Z Secret source: Actions
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4468027Z Cache mode: write
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4469219Z Prepare workflow directory
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4903808Z Prepare all required actions
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.4960931Z Getting action download info
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.6677802Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.7848439Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:56.9893961Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.2759594Z Complete job name: static core (sift)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3423790Z ##[group]Run actions/checkout@v4
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3424611Z with:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3425091Z   repository: jhonwickbabayaga99-cyber/vulnres-sift-lab
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3428764Z   token: ***
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3429145Z   ssh-strict: true
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3429531Z   ssh-user: git
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3429915Z   persist-credentials: true
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3430355Z   clean: true
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3430737Z   sparse-checkout-cone-mode: true
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3431178Z   fetch-depth: 1
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3431553Z   fetch-tags: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3431931Z   show-progress: true
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3432312Z   lfs: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3432668Z   submodules: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3433221Z   set-safe-directory: true
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3433657Z   allow-unsafe-pr-checkout: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3434264Z env:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3434713Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3435286Z   FREERDP_COMMIT: 993499447
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.3435737Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4348113Z Syncing repository: jhonwickbabayaga99-cyber/vulnres-sift-lab
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4351556Z ##[group]Getting Git version info
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4352555Z Working directory is '/home/runner/work/vulnres-sift-lab/vulnres-sift-lab'
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4354184Z [command]/usr/bin/git version
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4455095Z git version 2.55.0
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4505251Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4517740Z Temporarily overriding HOME='/home/runner/work/_temp/ae6613fc-b0c5-4fd6-8d31-a1d7f62c2df0' before making global git config changes
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4520077Z Adding repository directory to the temporary git global config as a safe directory
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4523476Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vulnres-sift-lab/vulnres-sift-lab
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4547218Z Deleting the contents of '/home/runner/work/vulnres-sift-lab/vulnres-sift-lab'
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4554928Z ##[group]Initializing the repository
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4567114Z [command]/usr/bin/git init /home/runner/work/vulnres-sift-lab/vulnres-sift-lab
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4644263Z hint: Using 'master' as the name for the initial branch. This default branch name
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4664350Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4666211Z hint: to use in all of your new repositories, which will suppress this warning,
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4667452Z hint: call:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4668024Z hint:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4668738Z hint: 	git config --global init.defaultBranch <name>
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4669587Z hint:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4670379Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4671727Z hint: 'development'. The just-created branch can be renamed via this command:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4672929Z hint:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4673609Z hint: 	git branch -m <name>
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4674269Z hint:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4675258Z hint: Disable this message with "git config set advice.defaultBranchName false"
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4677145Z Initialized empty Git repository in /home/runner/work/vulnres-sift-lab/vulnres-sift-lab/.git/
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4680470Z [command]/usr/bin/git remote add origin https://github.com/jhonwickbabayaga99-cyber/vulnres-sift-lab
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4749828Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4751303Z ##[group]Disabling automatic garbage collection
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4753483Z [command]/usr/bin/git config --local gc.auto 0
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4836428Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4837838Z ##[group]Setting up auth
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4839297Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.4877223Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.5596698Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.5629101Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.5828083Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.5860962Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.6064489Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.6102208Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.6103571Z ##[group]Fetching the repository
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.6111691Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2074f3d0b4cc5dba98bdaddb1fce978e410286ca:refs/remotes/origin/main
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8480430Z From https://github.com/jhonwickbabayaga99-cyber/vulnres-sift-lab
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8482295Z  * [new ref]         2074f3d0b4cc5dba98bdaddb1fce978e410286ca -> origin/main
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8485024Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8485947Z ##[group]Determining the checkout info
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8487130Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8491489Z [command]/usr/bin/git sparse-checkout disable
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8537528Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8566500Z ##[group]Checking out the ref
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8569667Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8626626Z Switched to a new branch 'main'
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8630153Z branch 'main' set up to track 'origin/main'.
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8636190Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8676006Z [command]/usr/bin/git log -1 --format=%H
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8701531Z 2074f3d0b4cc5dba98bdaddb1fce978e410286ca
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8998250Z ##[group]Run actions/setup-python@v5
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8999140Z with:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.8999755Z   python-version: 3.12
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9000482Z   check-latest: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9008489Z   token: ***
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9009188Z   update-environment: true
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9009988Z   allow-prereleases: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9010760Z   freethreaded: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9011432Z env:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9012186Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9013409Z   FREERDP_COMMIT: 993499447
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:57.9014135Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.0181727Z ##[group]Installed versions
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.1059780Z (node:2153) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.1063285Z (Use `node --trace-deprecation ...` to show where the warning was created)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.1064844Z Successfully set up CPython (3.12.14)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.1066607Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.1231686Z ##[group]Run python -m pip install --upgrade pip
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.1233200Z ^[[36;1mpython -m pip install --upgrade pip^[[0m
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.1234713Z ^[[36;1mpython -m pip install networkx tree-sitter tree-sitter-c tree-sitter-cpp^[[0m
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2243463Z shell: /usr/bin/bash -e {0}
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2244430Z env:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2245329Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2246483Z   FREERDP_COMMIT: 993499447
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2247533Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2249003Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2250457Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2251779Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2253205Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2254642Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+static core (sift)	UNKNOWN STEP	2026-10-08T05:37:58.2255811Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:01.0548842Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages (26.2.1)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.3042075Z Collecting networkx
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.3486017Z   Downloading networkx-3.7-py3-none-any.whl.metadata (6.7 kB)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.4636313Z Collecting tree-sitter
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.4717157Z   Downloading tree_sitter-0.26.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (10 kB)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.6782025Z Collecting tree-sitter-c
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.6823924Z   Downloading tree_sitter_c-0.24.2-cp310-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (1.8 kB)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.6941514Z Collecting tree-sitter-cpp
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.6995353Z   Downloading tree_sitter_cpp-0.23.4-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (1.8 kB)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.7072523Z Downloading networkx-3.7-py3-none-any.whl (2.1 MB)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.7985637Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 25.4 MB/s  0:00:00
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:02.8059537Z Downloading tree_sitter-0.26.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (667 kB)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:03.0404642Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 667.5/667.5 kB 1.8 MB/s  0:00:00
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:03.0440400Z Downloading tree_sitter_c-0.24.2-cp310-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (94 kB)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:03.1478687Z Downloading tree_sitter_cpp-0.23.4-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (316 kB)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:03.2741411Z Installing collected packages: tree-sitter-cpp, tree-sitter-c, tree-sitter, networkx
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.5476582Z 
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.5488040Z Successfully installed networkx-3.7 tree-sitter-0.26.0 tree-sitter-c-0.24.2 tree-sitter-cpp-0.23.4
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6125265Z ##[group]Run git clone --filter=blob:none --sparse "$FREERDP_REPO" corpus/freerdp
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6125932Z ^[[36;1mgit clone --filter=blob:none --sparse "$FREERDP_REPO" corpus/freerdp^[[0m
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6126252Z ^[[36;1mcd corpus/freerdp^[[0m
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6126484Z ^[[36;1mgit fetch --depth 1 origin "$FREERDP_COMMIT"^[[0m
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6126740Z ^[[36;1mgit checkout -q FETCH_HEAD^[[0m
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6127022Z ^[[36;1mgit sparse-checkout set libfreerdp/core channels/urbdrc^[[0m
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6127336Z ^[[36;1mecho "revisi: $(git rev-parse HEAD)"^[[0m
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6185176Z shell: /usr/bin/bash -e {0}
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6185429Z env:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6185836Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6186128Z   FREERDP_COMMIT: 993499447
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6186415Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6186778Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6187214Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6187529Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6187826Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6188119Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6188369Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:04.6281896Z Cloning into 'corpus/freerdp'...
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.1911005Z fatal: couldn't find remote ref 993499447
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.1946385Z ##[error]Process completed with exit code 128.
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2021995Z ##[group]Run actions/upload-artifact@v4
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2022227Z with:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2022401Z   name: sift-static-results
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2022603Z   path: state/*.json
+static core (sift)	UNKNOWN STEP	state/*.db
+static core (sift)	UNKNOWN STEP	
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2023001Z   retention-days: 14
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2023250Z   if-no-files-found: warn
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2023448Z   compression-level: 6
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2023632Z   overwrite: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2023811Z   include-hidden-files: false
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2024017Z env:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2024248Z   FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2024509Z   FREERDP_COMMIT: 993499447
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2024748Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2025080Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2025409Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2025764Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2026063Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2026357Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.2026612Z ##[endgroup]
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.3345256Z (node:2236) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.3345974Z (Use `node --trace-deprecation ...` to show where the warning was created)
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.3372601Z ##[warning]No files were found with the provided path: state/*.json
+static core (sift)	UNKNOWN STEP	state/*.db. No artifacts will be uploaded.
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.3566336Z Post job cleanup.
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4293885Z [command]/usr/bin/git version
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4331505Z git version 2.55.0
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4363482Z Temporarily overriding HOME='/home/runner/work/_temp/f85f5da5-7259-49eb-a1fc-29a85b5ba250' before making global git config changes
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4364541Z Adding repository directory to the temporary git global config as a safe directory
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4369276Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vulnres-sift-lab/vulnres-sift-lab
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4406654Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4437829Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4657024Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4742134Z http.https://github.com/.extraheader
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4753335Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.4787189Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.5054944Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.5093622Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.5449156Z Cleaning up orphan processes
+static core (sift)	UNKNOWN STEP	2026-10-08T05:38:06.5691762Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
