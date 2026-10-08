@@ -1,0 +1,10 @@
+# artefak lokal — tidak ikut ke GitHub (CI mengkloning FreeRDP sendiri)
+corpus/
+state/
+*.db
+*.session.json
+*.apikey.json
+out/
+build-*/
+freerdp-src/
+tools/

@@ -1,0 +1,168 @@
+name: vulnres-freerdp-asan
+
+# Tujuan: menjalankan tahap `poc` (validasi dinamis) TANPA memakai disk/RAM mesin lokal.
+# Runner publik = 4 vCPU / 16 GB RAM (gratis & tak terbatas untuk repo publik).
+#
+# Job 1 static-core : pipeline deterministik sift (graph→recon→slice→analyze→triage)
+# Job 2 dynamic-asan: build FreeRDP minimal + harness dgn AddressSanitizer, jalankan, unggah log
+#
+# Pemicu manual: tab Actions → workflow ini → "Run workflow"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  FREERDP_REPO: https://github.com/FreeRDP/FreeRDP.git
+  # commit yang dianalisis artikel Quarkslab (bisa diganti)
+  FREERDP_COMMIT: 993499447
+
+jobs:
+  static-core:
+    name: static core (sift)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pasang dependensi inti
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install networkx tree-sitter tree-sitter-c
+
+      - name: Ambil FreeRDP (sub-pohon yang dianalisis)
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse "$FREERDP_REPO" corpus/freerdp
+          cd corpus/freerdp
+          git sparse-checkout set libfreerdp/core channels/urbdrc
+          git rev-parse HEAD
+
+      - name: Index → recon → slice → analyze → triage
+        run: |
+          set -x
+          python3 src/sift.py index  --src corpus/freerdp --db state/freerdp.db
+          python3 src/sift.py recon  --db state/freerdp.db --out state/slices.json
+          python3 src/sift.py slice  --db state/freerdp.db --dir libfreerdp/core/nego --out state/slice-nego.json
+          python3 src/sift.py slice  --db state/freerdp.db --dir libfreerdp/core      --out state/slice-core.json
+          python3 src/sift.py analyze --db state/freerdp.db --slice state/slice-nego.json --out state/findings-nego.json
+          python3 src/sift.py triage  --in state/findings-nego.json --out state/clusters-nego.json
+          python3 src/sift.py analyze --db state/freerdp.db --slice state/slice-core.json --out state/findings-core.json
+          python3 src/sift.py triage  --in state/findings-core.json --out state/clusters-core.json
+
+      - name: Ringkas ke job summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          print("### Klaster yang relevan (nego)\n")
+          d = json.loads(pathlib.Path("state/clusters-nego.json").read_text())
+          for c in d["clusters"]:
+              if "RoutingToken" in c["key"]:
+                  print("- **[%s]** `%s` — %s" % (c["class"], c["key"], c["reason"]))
+          print("\n### Ringkasan kelas (core)\n")
+          d2 = json.loads(pathlib.Path("state/clusters-core.json").read_text())
+          from collections import Counter
+          print("```")
+          print(dict(Counter(x["class"] for x in d2["clusters"])))
+          print("total klaster: %d" % len(d2["clusters"]))
+          print("```")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sift-static-results
+          path: |
+            state/*.json
+            state/*.db
+          retention-days: 14
+
+  dynamic-asan:
+    name: dynamic asan (build + harness)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pasang toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq clang lld cmake ninja-build pkg-config libssl-dev zlib1g-dev
+          clang --version | head -1
+          cmake --version | head -1
+
+      - name: Ambil FreeRDP (penuh, dangkal)
+        run: |
+          git clone --depth 1 "$FREERDP_REPO" freerdp-src
+          cd freerdp-src
+          git rev-parse HEAD
+
+      - name: Konfigurasi FreeRDP (minimal + ASan)
+        run: |
+          cmake -S freerdp-src -B build-freerdp -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_INSTALL_PREFIX="$HOME/frdp" \
+            -DCMAKE_C_COMPILER=clang \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer -g -O1" \
+            -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" \
+            -DWITH_SERVER=OFF -DWITH_X11=OFF -DWITH_WAYLAND=OFF -DWITH_CUPS=OFF \
+            -DWITH_PCSC=OFF -DWITH_PULSE=OFF -DWITH_ALSA=OFF -DWITH_FFMPEG=OFF \
+            -DWITH_JPEG=OFF -DWITH_GSSAPI=OFF -DWITH_KRB5=OFF -DWITH_MANPAGES=OFF \
+            -DWITH_VERBOSE_WINPR_ASSERT=OFF -DWITH_SAMPLE=OFF
+
+      - name: Build + install FreeRDP (dengan ASan)
+        run: |
+          cmake --build build-freerdp --target install -j"$(nproc)"
+
+      - name: Build harness
+        run: |
+          cmake -S ci/harness -B build-harness -G Ninja \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_PREFIX_PATH="$HOME/frdp" \
+            -DFREERDP_SRC="$PWD/freerdp-src" \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          cmake --build build-harness -j"$(nproc)"
+
+      - name: Jalankan harness di bawah ASan
+        continue-on-error: true
+        run: |
+          mkdir -p out
+          set +e
+          ASAN_OPTIONS=detect_leaks=0:abort_on_error=0:fill_byte=0xcd:print_stats=1 \
+            ./build-harness/harness_nego > out/asan-run.log 2>&1
+          echo "exit=$?" >> out/asan-run.log
+          set -e
+          echo "--- 40 baris pertama ---"; head -40 out/asan-run.log || true
+          grep -nE "AddressSanitizer|ERROR|heap-buffer-overflow|WRITE of size|SUMMARY" out/asan-run.log || echo "tidak ada jejak ASan"
+
+      - name: Tulis verdict ke job summary
+        if: always()
+        run: |
+          {
+            echo "### Hasil dinamis (ASan)"
+            if grep -q "AddressSanitizer" out/asan-run.log 2>/dev/null; then
+              echo '```'
+              grep -nE "AddressSanitizer|WRITE of size|READ of size|SUMMARY" out/asan-run.log | head -12
+              echo '```'
+            else
+              echo "Tidak ada jejak ASan pada run ini (lihat artefak log; jalur sink mungkin butuh setup transport)."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: asan-run-artifacts
+          path: |
+            out/
+            build-harness/harness_nego
+            build-freerdp/CMakeCache.txt
+          retention-days: 14
