@@ -177,3 +177,41 @@ jobs:
             build-harness/harness_nego
             build-freerdp/CMakeCache.txt
           retention-days: 14
+
+  urbdrc-channel-build:
+    name: urbdrc channel (siapkan harness kebocoran)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependensi channel (libusb/udev/fuse)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq clang cmake ninja-build pkg-config libssl-dev zlib1g-dev \
+            libusb-1.0-0-dev libudev-dev libfuse3-dev
+      - name: Ambil FreeRDP (revisi dipin)
+        run: |
+          git clone --filter=blob:none "$FREERDP_REPO" freerdp-src
+          cd freerdp-src
+          git fetch --depth 1 origin "$FREERDP_COMMIT"
+          git checkout -q FETCH_HEAD
+          echo "revisi: $(git rev-parse HEAD)"
+      - name: Konfigurasi + bangun channel urbdrc
+        run: |
+          cmake -S freerdp-src -B build-urbdrc -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_C_COMPILER=clang \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF \
+            -DWITH_CHANNELS=ON -DWITH_CLIENT=ON -DWITH_CLIENT_COMMON=ON \
+            -DWITH_SERVER=OFF -DWITH_X11=OFF -DWITH_WAYLAND=OFF -DWITH_CUPS=OFF \
+            -DWITH_PCSC=OFF -DWITH_PULSE=OFF -DWITH_ALSA=OFF \
+            -DWITH_FFMPEG=OFF -DWITH_VIDEO_FFMPEG=OFF -DWITH_DSP_FFMPEG=OFF \
+            -DWITH_SWSCALE=OFF -DWITH_JPEG=OFF -DWITH_CAIRO=OFF -DWITH_OPUS=OFF \
+            -DWITH_GSSAPI=OFF -DWITH_KRB5=OFF -DWITH_MANPAGES=OFF -DWITH_SAMPLE=OFF
+          cmake --build build-urbdrc -j"$(nproc)" 2>&1 | tail -20
+      - name: Laporkan artefak channel
+        run: |
+          echo "--- berkas urbdrc yang dihasilkan:"
+          find build-urbdrc -name "*urbdrc*" | head -20
+          echo "--- pustaka statis terkait:"
+          find build-urbdrc -name "*.a" | head -20
