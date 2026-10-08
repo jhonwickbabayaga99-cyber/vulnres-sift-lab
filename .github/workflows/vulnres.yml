@@ -133,52 +133,7 @@ jobs:
           cmake --build build-freerdp --target install -j"$(nproc)"
 
       - name: Build harness
-        run: |
-          mkdir -p build-harness
-          export PKG_CONFIG_PATH="$HOME/frdp/lib/pkgconfig:$HOME/frdp/lib64/pkgconfig:${PKG_CONFIG_PATH}"
-          echo "--- isi prefix install ---"; ls "$HOME/frdp/lib" | head -20
-          echo "--- pkg-config freerdp3 ---"; pkg-config --cflags --libs freerdp3 || true
-          echo "--- pkg-config --static ---"; pkg-config --static --libs freerdp3 winpr3 || true
-          # header publik+generated dari prefix install (pkg-config cflags), header internal dari sumber
-          CFLAGS=$(pkg-config --cflags freerdp3 winpr3 2>/dev/null || echo "")
-          LIBS=$(pkg-config --static --libs freerdp3 winpr3 2>/dev/null \
-                 || pkg-config --libs freerdp3 winpr3 2>/dev/null \
-                 || echo "-lfreerdp3 -lwinpr3")
-          echo "CFLAGS: $CFLAGS"
-          # Bukan tebakan tunggal: coba beberapa set include, berhenti di yang pertama bisa dikompilasi.
-          # Satu run tetap konvergen walau satu kombinasi meleset.
-          try_build() {
-            local label="$1"; shift
-            echo "::: kandidat $label"
-            if clang -fsanitize=address -fno-omit-frame-pointer -g -O1 \
-                 $CFLAGS "$@" \
-                 ci/harness/harness_nego.c -o build-harness/harness_nego \
-                 -L"$HOME/frdp/lib" $LIBS -lssl -lcrypto -lz -lpthread -lm -ldl \
-                 2>"build-harness/try-$label.log"; then
-              echo "  BERHASIL: $label"
-              return 0
-            fi
-            echo "  gagal: $label"
-            sed -n '1,6p' "build-harness/try-$label.log" | sed 's/^/    /'
-            return 1
-          }
-          INC_SRC="-I$PWD/freerdp-src/libfreerdp/core -I$PWD/freerdp-src/libfreerdp -I$PWD/freerdp-src/winpr/include -I$PWD/freerdp-src/include"
-          INC_GEN="-I$PWD/build-freerdp/winpr/include -I$PWD/build-freerdp/include -I$PWD/build-freerdp"
-          W=0
-          if [ $W = 0 ]; then try_build "A-pkgconfig-sumber" $INC_SRC && W=1; fi
-          if [ $W = 0 ]; then try_build "B-buildtree" $INC_GEN $INC_SRC && W=1; fi
-          if [ $W = 0 ]; then try_build "C-prefix" -I"$HOME/frdp/include" $INC_SRC && W=1; fi
-          if [ $W = 0 ]; then
-            INC_CC=$(python3 ci/harness/extract_flags.py build-freerdp/compile_commands.json 2>/dev/null || true)
-            echo "::: flag -I dari build FreeRDP sendiri: ${INC_CC:0:160}"
-            if [ -n "$INC_CC" ]; then try_build "D-flagresmi" $INC_CC $INC_SRC && W=1; fi
-          fi
-          if [ $W = 0 ]; then
-            echo "::error::semua kandidat include gagal dikompilasi"
-            for f in build-harness/try-*.log; do echo "--- $f"; head -12 "$f"; done
-            exit 1
-          fi
-          ls -l build-harness/harness_nego
+        run: bash ci/harness/build.sh
 
       - name: Jalankan harness di bawah ASan
         continue-on-error: true
