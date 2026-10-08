@@ -21,10 +21,22 @@ INC_SRC="-I$PWD/freerdp-src/libfreerdp/core -I$PWD/freerdp-src/libfreerdp -I$PWD
 INC_GEN="-I$PWD/build-freerdp/winpr/include -I$PWD/build-freerdp/include"
 INC_CC=$(python3 ci/harness/extract_flags.py build-freerdp/compile_commands.json 2>/dev/null || true)
 
-A_BUILD_FRDP=$(ls build-freerdp/libfreerdp/libfreerdp*.a 2>/dev/null | head -1 || true)
-A_BUILD_WINPR=$(ls build-freerdp/winpr/libwinpr*.a 2>/dev/null | head -1 || true)
-A_INST_FRDP=$(ls "$HOME/frdp"/lib/libfreerdp*.a 2>/dev/null | head -1 || true)
-A_INST_WINPR=$(ls "$HOME/frdp"/lib/libwinpr*.a 2>/dev/null | head -1 || true)
+# nama TEPAT — glob "libfreerdp*.a" pernah salah pilih libfreerdp-client3.a
+pick_lib() { # $1 = nama berkas, $2... = direktori pencarian (maks 3 level)
+  local want="$1"; shift
+  local d hit
+  for d in "$@"; do
+    [ -d "$d" ] || continue
+    hit=$(find "$d" -maxdepth 3 -name "$want" 2>/dev/null | head -1)
+    [ -n "$hit" ] && { echo "$hit"; return 0; }
+  done
+  return 1
+}
+A_BUILD_FRDP=$(pick_lib libfreerdp3.a build-freerdp || true)
+A_BUILD_WINPR=$(pick_lib libwinpr3.a build-freerdp || true)
+A_BUILD_CLI=$(pick_lib libfreerdp-client3.a build-freerdp || true)
+A_INST_FRDP=$(pick_lib libfreerdp3.a "$HOME/frdp" || true)
+A_INST_WINPR=$(pick_lib libwinpr3.a "$HOME/frdp" || true)
 SYS="-lssl -lcrypto -lz -lpthread -lm -ldl -lrt"
 
 echo "--- artefak terdeteksi"
@@ -32,27 +44,34 @@ printf '  build-freerdp: %s | %s\n' "${A_BUILD_FRDP:-tidak ada}" "${A_BUILD_WINP
 printf '  install      : %s | %s\n' "${A_INST_FRDP:-tidak ada}" "${A_INST_WINPR:-tidak ada}"
 printf '  pkg-config   : %s\n' "${LIBS_PC:0:120}"
 
-diagnosa() {
-  echo "--- diagnosa berkas library"
-  for f in "$A_INST_FRDP" "$A_BUILD_FRDP"; do
-    [ -n "$f" ] && [ -f "$f" ] || continue
-    echo "  berkas: $f"
-    ls -la "$f" 2>&1 | sed 's/^/    /'
-    file "$f" 2>&1 | head -1 | sed 's/^/    /'
-    head -c 8 "$f" 2>/dev/null | od -c 2>/dev/null | head -2 | sed 's/^/    /'
-    (ar t "$f" 2>&1 | head -3 | sed 's/^/    anggota: /') || true
-    (llvm-ar t "$f" 2>&1 | head -3 | sed 's/^/    llvm-anggota: /') || true
-  done
+# laporkan baris galat DI MANA PUN posisinya (warning deprecation mengubur error di awal log)
+report_log() {
+  local f="$1"
+  [ -f "$f" ] || return 0
+  echo "    --- baris galat:"
+  grep -iE "error|undefined reference|cannot find|ld:" "$f" 2>/dev/null | grep -viE "deprecated|\-Wdep" | head -8 | sed 's/^/      /' || true
+  echo "    --- 4 baris terakhir:"
+  tail -4 "$f" | sed 's/^/      /'
 }
 
 LABELS=(); INCS=(); LIBS=()
 add() { LABELS+=("$1"); INCS+=("$2"); LIBS+=("$3"); }
 add "1-pc-install"        "$CFLAGS_PC $INC_SRC"           "$LIBS_PC $SYS"
 add "2-pc-buildtree"      "$CFLAGS_PC $INC_GEN $INC_SRC"  "$LIBS_PC $SYS"
-[ -n "$A_BUILD_FRDP" ] && add "3-arsip-build" "$CFLAGS_PC $INC_GEN $INC_SRC" "$A_BUILD_FRDP $A_BUILD_WINPR $SYS"
-[ -n "$A_INST_FRDP" ]  && add "4-arsip-install" "$CFLAGS_PC $INC_SRC"        "$A_INST_FRDP $A_INST_WINPR $SYS"
-[ -n "$INC_CC" ]       && add "5-flagresmi" "$INC_CC $INC_SRC"               "$LIBS_PC $SYS"
-[ -n "$INC_CC" ] && [ -n "$A_BUILD_FRDP" ] && add "6-flagresmi-arsip" "$INC_CC $INC_GEN $INC_SRC" "$A_BUILD_FRDP $A_BUILD_WINPR $SYS"
+if [ -n "$A_BUILD_FRDP" ] && [ -n "$A_BUILD_WINPR" ]; then
+  add "3-arsip-build"      "$CFLAGS_PC $INC_GEN $INC_SRC" "$A_BUILD_FRDP $A_BUILD_WINPR $SYS"
+  add "4-arsip-build-icu"  "$CFLAGS_PC $INC_GEN $INC_SRC" "$A_BUILD_FRDP $A_BUILD_WINPR -licuuc -licui18n -licudata $SYS"
+fi
+if [ -n "$A_BUILD_FRDP" ] && [ -n "$A_BUILD_CLI" ]; then
+  add "5-arsip-build+client" "$CFLAGS_PC $INC_GEN $INC_SRC" "$A_BUILD_CLI $A_BUILD_FRDP $A_BUILD_WINPR $SYS"
+fi
+if [ -n "$A_INST_FRDP" ] && [ -n "$A_INST_WINPR" ]; then
+  add "6-arsip-install"    "$CFLAGS_PC $INC_SRC"          "$A_INST_FRDP $A_INST_WINPR $SYS"
+fi
+if [ -n "$INC_CC" ] && [ -n "$A_BUILD_FRDP" ] && [ -n "$A_BUILD_WINPR" ]; then
+  add "7-flagresmi-arsip"  "$INC_CC $INC_GEN $INC_SRC"    "$A_BUILD_FRDP $A_BUILD_WINPR -licuuc -licui18n -licudata $SYS"
+fi
+[ -n "$INC_CC" ] && add "8-flagresmi-pc" "$INC_CC $INC_SRC" "$LIBS_PC $SYS"
 
 W=""
 for i in "${!LABELS[@]}"; do
@@ -65,13 +84,12 @@ for i in "${!LABELS[@]}"; do
     break
   fi
   echo "  gagal: ${LABELS[$i]}"
-  sed -n '1,5p' "$OUT/try-${LABELS[$i]}.log" | sed 's/^/    /'
+  report_log "$OUT/try-${LABELS[$i]}.log"
 done
 
 if [ -z "$W" ]; then
-  echo "::error::semua kombinasi gagal — diagnosa di bawah"
-  diagnosa
-  for f in "$OUT"/try-*.log; do echo "--- $f"; head -15 "$f"; done
+  echo "::error::semua kombinasi gagal"
+  for f in "$OUT"/try-*.log; do echo "=== $f"; head -40 "$f"; done
   exit 1
 fi
 
