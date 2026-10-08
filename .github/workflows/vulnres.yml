@@ -265,3 +265,61 @@ jobs:
             build-chain/cc.log
             build-chain/harness_chain
           retention-days: 14
+
+  remote-asan:
+    name: remote reachability (klien asli x server jahat, ASan)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pasang toolchain
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq clang lld cmake ninja-build pkg-config libssl-dev zlib1g-dev \
+            libavcodec-dev libavutil-dev libswscale-dev libjpeg-dev libfuse3-dev
+          clang --version | head -1
+
+      - name: Ambil FreeRDP (penuh, dangkal)
+        run: |
+          git clone --filter=blob:none "$FREERDP_REPO" freerdp-src
+          cd freerdp-src
+          git fetch --depth 1 origin "$FREERDP_COMMIT"
+          git checkout -q FETCH_HEAD
+          echo "revisi rentan: $(git rev-parse HEAD)"
+
+      - name: Konfigurasi FreeRDP (klien aktif + ASan)
+        run: |
+          cmake -S freerdp-src -B build-remote-frdp -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_INSTALL_PREFIX="$HOME/frdp" \
+            -DCMAKE_C_COMPILER=clang \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer -g -O1" \
+            -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address" \
+            -DWITH_CLIENT=ON -DWITH_CLIENT_COMMON=ON -DWITH_CHANNELS=OFF -DWITH_SERVER=OFF \
+            -DWITH_X11=OFF -DWITH_WAYLAND=OFF -DWITH_CUPS=OFF \
+            -DWITH_PCSC=OFF -DWITH_PULSE=OFF -DWITH_ALSA=OFF \
+            -DWITH_FFMPEG=OFF -DWITH_VIDEO_FFMPEG=OFF -DWITH_DSP_FFMPEG=OFF \
+            -DWITH_SWSCALE=OFF -DWITH_JPEG=OFF -DWITH_CAIRO=OFF -DWITH_OPUS=OFF \
+            -DWITH_OPENCL=OFF -DWITH_OPENH264_LOADING=OFF \
+            -DWITH_GSSAPI=OFF -DWITH_KRB5=OFF -DWITH_MANPAGES=OFF \
+            -DWITH_VERBOSE_WINPR_ASSERT=OFF -DWITH_SAMPLE=OFF
+
+      - name: Build + install FreeRDP (klien + ASan)
+        run: cmake --build build-remote-frdp --target install -j"$(nproc)"
+
+      - name: Build + jalankan harness remote (gate reachability)
+        run: bash ci/harness/build_remote.sh
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: remote-asan-artifacts
+          path: |
+            build-remote/remote.log
+            build-remote/cc.log
+            build-remote/harness_remote
+          retention-days: 14
