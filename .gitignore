@@ -11,3 +11,4 @@ build-*/
 freerdp-src/
 tools/
 ci-out*/
+ci-out*
