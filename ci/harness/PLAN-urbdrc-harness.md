@@ -65,3 +65,22 @@ bagi overflow `nego` (Blok 4).
 
 Kedua advisory ini **sudah publik dan sudah ditambal** → nilai bounty 0. Hasil akhir blok-blok ini
 adalah **bukti metodologi** (dua bug dirangkai jadi RCE, ala artikel Quarkslab), bukan uang.
+
+## Kemajuan verifikasi (sesi ini, dari sumber @993499447)
+
+| Yang dipastikan | Nilai |
+|---|---|
+| Dispatch dari `urbdrc_process_udev_data_transfer` | `case TRANSFER_IN_REQUEST → urbdrc_process_transfer_request(pdev, callback, data, MessageId, udevman, transferDir=USBD_TRANSFER_DIRECTION_IN)` |
+| Layout parse di dalamnya (`data_transfer.c:1651+`) | `UINT32 CbTsUrb` → cek panjang `4 + CbTsUrb` → `UINT16 Size` (**wajib == CbTsUrb**) → `UINT16 URB_Function` → `UINT32 RequestId` → `switch(URB_Function)` |
+| Handler yang sampai ke titik bocor | `URB_Function` = bulk/interrupt → handler memanggil `pdev->bulk_or_interrupt_transfer(...)` → callback `urb_bulk_transfer_cb` → **`urb_write_completion`** (`data_transfer.c:851`/`863`) |
+| Simbol yang perlu di-link | `create_shared_message_header_with_functionid`, `write_shared_message_header_with_functionid` → **`urbdrc_helpers.c` (liburbdrc-common.a)**; `write_urb_result_header` → **sama TU** dengan data_transfer.c |
+| Header internal | `channels/urbdrc/client/data_transfer.h` (prototipe `urbdrc_process_udev_data_transfer`), `channels/urbdrc/client/urbdrc_main.h` (`S_IUDEVICE` baris 97+, `IUDEVMAN::get_udevice_by_UsbDevice` baris 192) |
+| Artefak build channel (terbukti di CI run #15) | `urbdrc_main.c.o`, `urbdrc-client-libusb.dir`, `channels/urbdrc/common/liburbdrc-common.a` |
+
+### Sisa satu langkah sebelum menulis kode
+
+1. Baca parse lanjutan handler bulk/interrupt (field: `EndpointAddress`, `TransferFlags`, `OutputBufferSize`, `RequestId`, ukuran paket) untuk menyusun stream yang tepat.
+2. Ambil **nilai konstanta**: `TRANSFER_IN_REQUEST`, `TS_URB_BULK_OR_INTERRUPT_TRANSFER`, `USBD_TRANSFER_DIRECTION_IN` (ada di header common/urbdrc, bukan di `data_transfer.c`).
+3. Baru tulis `harness_urbdrc.c` + job non-ASan (`MALLOC_PERTURB_=0xcd`) + gate.
+
+Semua di atas sudah diverifikasi dari berkas pada revisi rentan — bukan dari ingatan.
