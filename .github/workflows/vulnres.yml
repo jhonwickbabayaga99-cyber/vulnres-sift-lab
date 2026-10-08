@@ -246,6 +246,7 @@ jobs:
             -DWITH_PCSC=OFF -DWITH_PULSE=OFF -DWITH_ALSA=OFF \
             -DWITH_FFMPEG=OFF -DWITH_VIDEO_FFMPEG=OFF -DWITH_DSP_FFMPEG=OFF \
             -DWITH_SWSCALE=OFF -DWITH_JPEG=OFF -DWITH_CAIRO=OFF -DWITH_OPUS=OFF \
+            -DWITH_VERBOSE_WINPR_ASSERT=OFF \
             -DWITH_GSSAPI=OFF -DWITH_KRB5=OFF -DWITH_MANPAGES=OFF -DWITH_SAMPLE=OFF
           cmake --build build-leak-frdp --target install -j"$(nproc)" 2>&1 | tail -8
       - name: Build + jalankan harness kebocoran (gate)
