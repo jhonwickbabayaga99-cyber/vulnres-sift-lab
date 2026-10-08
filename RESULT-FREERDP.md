@@ -266,3 +266,77 @@ tertimpa, atau alamat fault ≠ alamat pilihan — jadi "TERBUKTI" di sini tidak
 Overflow ini berjalan pada build dengan `WITH_VERBOSE_WINPR_ASSERT=OFF` (konfigurasi paket/CI kita). Dengan
 assert verbose menyala, `Stream_Write` menahan lebih dulu — tercatat sebagai run #19 yang gagal dan
 diperbaiki di run #20.
+
+## 10. Reachability REMOTE — TERBUKTI ✅
+
+Harness `ci/harness/harness_remote.c` (job `remote-asan`), run `37775986330`.
+Salinan log: `evidence/remote-reachability-37775986330.log`.
+
+Di sini **tidak ada panggilan API internal**: server dan klien sama-sama FreeRDP asli, dan satu-satunya
+sumber data adalah PDU yang dikirim melewati socket loopback.
+
+```
+[server] SendServerRedirection → terkirim (LoadBalanceInfo=600 byte)
+[server] koneksi ke-2 diterima → klien menyusun permintaan dengan token
+==5077==ERROR: AddressSanitizer: heap-buffer-overflow
+WRITE of size 615 at 0x515000005c80
+    #1 Stream_Write                   winpr/include/winpr/stream.h:1193
+    #2 nego_send_negotiation_request   nego.c:1098          ← situs overflow
+    #3 nego_attempt_nla                nego.c:651
+    #4 nego_send                       nego.c:1050
+    #5 nego_connect                    nego.c:235
+    #6 rdp_client_connect              connection.c:458      ← blok nego_set_routing_token
+    #7 rdp_client_redirect             connection.c:715      ← PDU kita diterapkan
+    #8 rdp_check_fds                   rdp.c:2310
+    #9 freerdp_check_fds               freerdp.c:368
+allocated by: Stream_New  winpr/libwinpr/utils/stream.c:101   (region 512 byte)
+```
+
+### Rantai datanya (kenapa ini benar-benar remote)
+
+```
+PDU dari socket → redirection.c (parser) → settings->LoadBalanceInfo (615 byte)
+  → connection.c:449 jika LoadBalanceInfo && Length>0 → nego_set_routing_token(…, 615)
+  → klien menyambung ke target (freerdp_reconnect) → nego_send_negotiation_request
+  → Stream_Write(…, 615) ke stream 512 → OVERFLOW
+```
+
+### Dari mana 615 byte (dibaca dari revisi rentan, bukan diasumsikan)
+
+`nego_set_routing_token` menyalin tepat `RoutingTokenLength`, dan revisi rentan **tidak punya**
+`Stream_EnsureRemainingCapacity` di `nego.c` (0 kemunculan). Panjang 615 datang dari penulis PDU
+sisi-server (`redirection.c`):
+
+```c
+const UINT32 length = 13 + redirection->LoadBalanceInfoLength + 2;   // 13 + 600 + 2 = 615
+Stream_Write_U8(s, "Cookie: msts=", 13);   /* bingkai milik FreeRDP */
+Stream_Write(s, redirection->LoadBalanceInfo, 600);  /* 600 byte yang dikendalikan penyerang */
+Stream_Write_U8(s, 0x0d); /* + CRLF */
+```
+
+Klien menyimpannya apa adanya (`redirection.c:607`) → `settings->LoadBalanceInfoLength = 615`.
+Jadi penyerang mengendalikan **600 dari 615 byte** yang menimpa heap.
+
+### Catatan konfigurasi (jujur)
+
+- Job ini sempat berstatus `failure` pada run #29 **hanya** karena gate menuntut string literal
+  `WRITE of size 600`, sedangkan tulisannya 615 (bingkai 13+2 byte di atas). Ambang gate kini
+  terukur (`>= 600`), diuji-menolak dengan kasus sintetis 599 → GAGAL, dan diverifikasi ulang
+  terhadap log nyata run #29 (semua syarat terpenuhi).
+- `-DWITH_SERVER=ON` saja tidak cukup: `server/shadow` menarik X11 → `WITH_SHADOW/PROXY/PLATFORM_SERVER=OFF`.
+- Klien dijalankan seperti klien nyata: `freerdp_connect` → loop `freerdp_check_fds` → `freerdp_reconnect`.
+
+## 11. Ringkasan blok 1–6
+
+| Blok | Isi | Bukti | Status |
+|---|---|---|---|
+| 1 | Mesin `sift` menemukan bug kelas 1 & 2 di revisi rentan | run `37763607686`, gate `ci/assert_uninit.py` | ✅ |
+| 2 | Kebocoran reserve-tanpa-tulis terukur (4096 byte, kontrol membedakan) | job `urbdrc-leak` | ✅ |
+| 3 | Harness mencapai jalur kebocoran di channel urbdrc | run `37763607686` | ✅ |
+| 4 | Overflow → kendali alur eksekusi (`pc` = alamat kanonik pilihan) | run `37769189299`, §9 | ✅ |
+| 5 | Reachability **remote** dari PDU lewat socket | run `37775986330`, §10 | ✅ |
+| 6 | Tulisan rantai + evidence (dokumen ini + `evidence/`) | §4, §7, §9, §10 | ✅ |
+
+Semua job CI berjalan di runner bersih tanpa instalasi lokal; tiap klaim punya run ID dan salinan
+log di `evidence/`. Nilai bounty untuk temuan ini = 0 (upstream sudah menambal lebih dulu) —
+yang bernilai di sini adalah **mesin dan metodenya**.

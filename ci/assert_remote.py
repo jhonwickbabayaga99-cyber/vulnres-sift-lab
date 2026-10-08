@@ -7,14 +7,21 @@ GAGAL (exit 1) dan menyebut syarat mana yang hilang — supaya "lulus" tidak per
 Jalankan `--selftest` untuk membuktikan gate-nya benar-benar menolak: ia diuji pada log sintetis
 yang sengaja menghilangkan tiap syarat satu per satu.
 """
+import re
 import sys
 
 
+def write_sizes(text: str):
+    return [int(m) for m in re.findall(r"WRITE of size (\d+)", text)]
+
+
 def check(text: str):
+    sizes = write_sizes(text)
     syarat = [
         ("laporan ASan ada", "AddressSanitizer" in text),
         ("klasifikasi heap-buffer-overflow", "heap-buffer-overflow" in text),
-        ("tulisan 600 byte (token yang dikendalikan server)", "WRITE of size 600" in text),
+        ("tulisan melebihi buffer 512 (token dari server; 600 byte kita + bingkai FreeRDP)",
+         any(s >= 600 for s in sizes)),
         ("jejak fungsi nego (situs overflow)", "nego" in text),
         ("jejak jalur redirection (pengurai PDU / penerap redirect)",
          any(k in text for k in ("redirection.c", "rdp_client_redirect"))),
@@ -47,11 +54,14 @@ def selftest():
     potong = [
         ("AddressSanitizer", "AddressSanitizer"),
         ("heap-buffer-overflow", "heap-buffer-overflow"),
-        ("WRITE of size 600", "WRITE of size 600"),
         ("nego", "nego"),
     ]
     for nama, token in potong:
         kasus.append(("tanpa '%s' (harus GAGAL)" % nama, basis.replace(token, "XXX"), False))
+    # ambang ukuran tulisan harus TERUKUR: 615 (kenyataan run) & 600 lulus, 599 gagal
+    kasus.append(("WRITE of size 615 (harus LULUS)", basis.replace("WRITE of size 600", "WRITE of size 615"), True))
+    kasus.append(("WRITE of size 600 (harus LULUS)", basis, True))
+    kasus.append(("WRITE of size 599 (harus GAGAL)", basis.replace("WRITE of size 600", "WRITE of size 599"), False))
     # jalur redirection = syarat "atau": salah satu saja hilang masih boleh lulus, dua-duanya tidak
     kasus.append(("tanpa 'redirection.c' saja (harus LULUS)", basis.replace("redirection.c", "X.c"), True))
     both = basis.replace("redirection.c", "X.c").replace("rdp_client_redirect", "rdp_client_XXX")
